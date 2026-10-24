@@ -79,10 +79,10 @@
     (comp:transform :translate (v3:vec 0f0 -16f0 0f0))
     (comp:sprite :spec '(metadata atlas)
                  :block-alias :atlas-spritesheet
-                 :name "explosion01-01" #++ "player1-exhaust-01"
-                 :frames 8 #++ 2
+                 :name "player1-exhaust-01"
+                 :frames 2
                  ;; 1/30 for a single frame, so 1/15 for both
-                 :duration .3 #++ .06f0)
+                 :duration .06f0)
     (sketch :material 'sprite-atlas
             :render-layer :player
             :slave (c:ref :self :component 'comp:sprite)))))

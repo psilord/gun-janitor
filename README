@@ -28,17 +28,23 @@ Milestones:
   - Added these components:
     - player-mover
 
-- Add colliders, bullet projectiles, damage-points (of bullets),
-  hit-points (for player, bullets, enemies).
+- Add projectiles used for bullets, etc. (physics layers, colliders, etc)
 
-  Added these component:
+  - Added these component:
     - projectile
     - gun
+
+- Give players/enemies/bullets the concept of damage points and hit points.
+
+  - Added these component:
     - damage-points
     - hit-points
-    - explosion
 
 - Add enemies, enemy movement, level spawn locations. Enemy shooting code.
+
+  - Added these component:
+    - explosion
+    - TODO
 
 - Add bitmap font, player score, maquettes for num players left, hang this
   stuff under the scaffold.

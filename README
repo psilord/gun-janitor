@@ -28,10 +28,10 @@ Milestones:
   - Added these components:
     - player-mover
 
-- Add enemies, enemy movement, level spawn locations.
-
 - Add colliders, bullet projectiles, damage-points (of bullets),
-  hit-points (of player and enemies). Enemy shooting code.
+  hit-points (of player and enemies).
+
+- Add enemies, enemy movement, level spawn locations. Enemy shooting code.
 
 - Add bitmap font, player score, maquettes for num players left, hang this
   stuff under the scaffold.

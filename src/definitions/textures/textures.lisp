@@ -16,18 +16,18 @@
 ;; asset pool that it is using and rebuild the asset-pool definition
 ;; during live coding?
 (c:define-texture bkgnd-test (:texture-2d x:clamp-all-edges)
-  (:texture-min-filter :nearest-mipmap-nearest)
+  (:texture-min-filter :nearest)
   (:texture-mag-filter :nearest)
   ;; (:use-mipmaps nil)
   (:data #((textures bkgnd-test))))
 
 (c:define-texture level-0 (:texture-2d x:clamp-all-edges)
-  (:texture-min-filter :nearest-mipmap-nearest)
+  (:texture-min-filter :nearest)
   (:texture-mag-filter :nearest)
   ;; (:use-mipmaps nil)
   (:data #((textures level-0))))
 
 (c:define-texture sprite-atlas (:texture-2d)
-  (:texture-min-filter :nearest-mipmap-nearest)
+  (:texture-min-filter :nearest)
   (:texture-mag-filter :nearest)
   (:data #((textures atlas))))

@@ -96,13 +96,9 @@ usually observed from a dpad. The vector should be of magnitude 1."
            (analog-movement-vec
              (quantize-analog-movement-vector-to-8-way analog-movement-vec)))
 
-      ;; KEEP GOING: Quantize the analog-movement-vec, and complete
-      ;; the computation of the dpad movement-vec
-
       (let* (;; Mix the dpad and analog-stick vectors. Normally only one
              ;; will be used at a time, but if both are, attempt to let
              ;; the player do it.
-
              (final-movement-vec
                (v3:+ dpad-movement-vec analog-movement-vec))
 
@@ -117,10 +113,6 @@ usually observed from a dpad. The vector should be of magnitude 1."
                             speed-control
                             (c:frame-time context))))
 
-             (current-translation (c:get-translation self))
-             (clipped-move (c:clip-movement-vector
-                            final-movement-vec current-translation
-                            region-cuboid))
              ;; Then fixate the move to be on integer boundaries. We do
              ;; this for two reasons: The first is that the space of the
              ;; game is supposed to be in pixel space and you can only
@@ -128,7 +120,12 @@ usually observed from a dpad. The vector should be of magnitude 1."
              ;; how the texturing math works on the GPU, you can get a
              ;; bleed from a nearby sprite if the texture coordinates
              ;; end up not being on pixel centers.
-             (clipped-move (v3:floor clipped-move)))
+             (final-movement-vec (v3:floor final-movement-vec))
+
+             (current-translation (c:get-translation self))
+             (clipped-move (c:clip-movement-vector
+                            final-movement-vec current-translation
+                            region-cuboid)))
 
 
         ;; place myself where I should go.

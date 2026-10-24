@@ -29,7 +29,14 @@ Milestones:
     - player-mover
 
 - Add colliders, bullet projectiles, damage-points (of bullets),
-  hit-points (of player and enemies).
+  hit-points (for player, bullets, enemies).
+
+  Added these component:
+    - projectile
+    - gun
+    - damage-points
+    - hit-points
+    - explosion
 
 - Add enemies, enemy movement, level spawn locations. Enemy shooting code.
 

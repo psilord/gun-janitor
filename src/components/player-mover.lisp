@@ -129,6 +129,4 @@ usually observed from a dpad. The vector should be of magnitude 1."
 
 
         ;; place myself where I should go.
-        (c:translate self clipped-move :space :inertial))
-
-      )))
+        (c:translate self clipped-move :space :inertial)))))

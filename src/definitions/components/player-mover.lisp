@@ -32,4 +32,8 @@
                    :initarg :region-cuboid
                    :initform (c:make-region-cuboid
                               (v3:vec 0f0 0f0 0f0)
-                              -240f0 240f0 -320f0 320f0 -10f0 10f0))))
+                              ;; screen width, adjusted for ship size.
+                              (+ -240f0 24f0) (- 240f0 24f0)
+                              ;; screen height, adjusted for ship size
+                              (+ -320f0 24f0) (- 320f0 24f0)
+                              -10f0 10f0))))

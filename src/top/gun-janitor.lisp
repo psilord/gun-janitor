@@ -124,8 +124,6 @@
                     ;; down a screen and we want it to be 90 seconds of
                     ;; experience.
                     :velocity (* 1f0 (/ (- 7200f0 (* 320f0 2f0)) 90f0)))
-   #++(comp:transform
-       :translate (v3:vec 0f0 (+ -3600f0 320f0) 0f0))
 
    ;; a child of the scaffold.
    (("camera" :copy "/cameras/ortho")
@@ -135,6 +133,6 @@
 
    ;; a child of the scaffold
    (("player1" :link "/player1-ship")
-    (comp:transform :translate (v3:vec (+ 24f0 0f0) 0f0 0f0)
+    (comp:transform :translate (v3:vec 0f0 0f0 0f0)
                     :scale (v3:vec 2f0 2f0 0f0))
     (player-mover :gamepad-id :gamepad1))))

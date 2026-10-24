@@ -18,13 +18,11 @@
 (c:define-texture bkgnd-test (:texture-2d x:clamp-all-edges)
   (:texture-min-filter :nearest)
   (:texture-mag-filter :nearest)
-  ;; (:use-mipmaps nil)
   (:data #((textures bkgnd-test))))
 
 (c:define-texture level-0 (:texture-2d x:clamp-all-edges)
   (:texture-min-filter :nearest)
   (:texture-mag-filter :nearest)
-  ;; (:use-mipmaps nil)
   (:data #((textures level-0))))
 
 (c:define-texture sprite-atlas (:texture-2d)

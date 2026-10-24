@@ -120,7 +120,15 @@ usually observed from a dpad. The vector should be of magnitude 1."
              (current-translation (c:get-translation self))
              (clipped-move (c:clip-movement-vector
                             final-movement-vec current-translation
-                            region-cuboid)))
+                            region-cuboid))
+             ;; Then fixate the move to be on integer boundaries. We do
+             ;; this for two reasons: The first is that the space of the
+             ;; game is supposed to be in pixel space and you can only
+             ;; move integer pixels. The second reason is that due to
+             ;; how the texturing math works on the GPU, you can get a
+             ;; bleed from a nearby sprite if the texture coordinates
+             ;; end up not being on pixel centers.
+             (clipped-move (v3:floor clipped-move)))
 
 
         ;; place myself where I should go.

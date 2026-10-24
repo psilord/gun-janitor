@@ -9,7 +9,11 @@
 ;; ;;;;;;;;;
 
 (c:define-component player-mover ()
-  ((%transform :accessor transform
+  (;; which gamepad to use for a player-mover instance.
+   (%gamepad-id :accessor gamepad-id
+                :initarg :gamepad-id
+                :initform :gamepad1)
+   (%transform :accessor transform
                :initarg :transform
                :initform nil)
    (%max-velocity :accessor max-velocity

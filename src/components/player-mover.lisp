@@ -70,14 +70,15 @@ usually observed from a dpad. The vector should be of magnitude 1."
 (defmethod c:on-component-update ((self player-mover))
   (with-accessors ((context c:context) (max-velocity max-velocity)
                    (translate-deadzone translate-deadzone)
-                   (region-cuboid region-cuboid))
+                   (region-cuboid region-cuboid)
+                   (gamepad-id gamepad-id))
       self
 
     (let* (;; First, read the dpad signals.
-           (left (c:on-button-enabled context :gamepad1 :left))
-           (right (c:on-button-enabled context :gamepad1 :right))
-           (up (c:on-button-enabled context :gamepad1 :up))
-           (down (c:on-button-enabled context :gamepad1 :down))
+           (left (c:on-button-enabled context gamepad-id :left))
+           (right (c:on-button-enabled context gamepad-id :right))
+           (up (c:on-button-enabled context gamepad-id :up))
+           (down (c:on-button-enabled context gamepad-id :down))
            (dpad-movement-vec
              (v3:+ (v3:+ (if left v3:+left+ v3:+zero+)
                          (if right v3:+right+ v3:+zero+))
@@ -85,13 +86,13 @@ usually observed from a dpad. The vector should be of magnitude 1."
                          (if down v3:+down+ v3:+zero+))))
            ;; Then read the half-speed button.
            (speed-control
-             (if (c:on-button-enabled context :gamepad1 :left-shoulder)
+             (if (c:on-button-enabled context gamepad-id :left-shoulder)
                  .5f0
                  1f0))
            ;; Then, read the left analog stick
            (analog-movement-vec
              (get-deadzone-corrected-gamepad-analog
-              self :radial-scaled '(:gamepad1 :left-stick)))
+              self :radial-scaled `(,gamepad-id :left-stick)))
            (analog-movement-vec
              (quantize-analog-movement-vector-to-8-way analog-movement-vec)))
 
@@ -126,4 +127,3 @@ usually observed from a dpad. The vector should be of magnitude 1."
         (c:translate self clipped-move :space :inertial))
 
       )))
-

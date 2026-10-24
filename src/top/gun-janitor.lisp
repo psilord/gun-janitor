@@ -137,4 +137,4 @@
    (("player1" :link "/player1-ship")
     (comp:transform :translate (v3:vec (+ 24f0 0f0) 0f0 0f0)
                     :scale (v3:vec 2f0 2f0 0f0))
-    (player-mover))))
+    (player-mover :gamepad-id :gamepad1))))

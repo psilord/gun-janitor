@@ -1,0 +1,45 @@
+銃の管理人 (Jū no Kanri-nin): "Gun custodian" or "firearms caretaker."
+
+A shmup where you are inexplicably the very last ship that can save the world.
+
+Milestones:
+
+- [DONE] Create level-0 png data, 240 x 3600 for one 320 high screen in 8
+  seconds for a total of 1 minute and 30 seconds of gameplay before boss is
+  reached. Add scaffold that slides along the level with camera hanging from
+  it. Use simple plane primitive to show position of the player.
+
+  - Built from simple define-prefab.
+  - Built scaffold.
+  - Used ortho camera.
+  - use direction-mover to move scaffold at right speed and stop at end.
+ 
+- [DONE] Lift sprite system, render layer components, and get a non-moving
+  player ship rendering with animated exhaust.
+
+  - Added these components:
+    - tags
+    - delayed-render
+    - sketch
+
+- [DONE] Construct movement components for player, left stick and dpad support,
+  non-rotating player. Support dpad and analog stick.
+
+  - Added these components:
+    - player-mover
+
+- Add enemies, enemy movement, level spawn locations.
+
+- Add colliders, bullet projectiles, damage-points (of bullets),
+  hit-points (of player and enemies). Enemy shooting code.
+
+- Add bitmap font, player score, maquettes for num players left, hang this
+  stuff under the scaffold.
+
+- Add director and reifiy state changes in game: splash screen, level-0 start,
+  spawning, warning banner, dying, game over, you win.
+
+-----------------------------------------------------------------------------
+
+Significant contributors:
+  Ryan Burnside (pixel_outlaw@gmail.com): Asset art especially in atlas.png.

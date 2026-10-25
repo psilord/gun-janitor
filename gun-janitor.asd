@@ -61,7 +61,9 @@
        (:file "tags")
        (:file "sketch")
        (:file "delayed-render")
-       (:file "player-mover")))))
+       (:file "player-mover")
+       (:file "projectile")
+       (:file "gun")))))
 
    ;; Your component methods all go here. In general, another large chunk of
    ;; game code resides here.
@@ -79,7 +81,9 @@
      (:file "tags")
      (:file "sketch")
      (:file "delayed-render")
-     (:file "player-mover")))
+     (:file "player-mover")
+     (:file "projectile")
+     (:file "gun")))
 
    ;; All prefabs go in here. a prefab must be defined before it is referenced.
    ;; define-prefabs and define-model will go in here, ordered among themselves

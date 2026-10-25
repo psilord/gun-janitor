@@ -40,6 +40,45 @@
     :text-ui
     :camera))
 
+;; TODO: Rename to base-projectile
+(c:define-prefab "projectile" (:library lib/main)
+  "A generic projectile that can be a bullet, or an asteroid, or whatever."
+  (projectile :transform (c:ref :self :component 'comp:transform)
+              :mover (c:ref :self :component 'direction-mover)
+              :collider (c:ref :self :component 'comp:sphere)
+              :sprite (c:ref :self :component 'comp:sprite)
+              ;; These next ones are over-layed in more detailed prefabs.
+              :physics-layer :player-bullet
+              :depth-layer :player-bullet
+              :velocity (/ 320f0 .20f0))
+  (tags :tags '(:dangerous))
+  ;;(damage-points :dp 1)
+  ;;(explosion :name "explode01-01" :frames 8)
+  ;;(hit-points :hp 1)
+  (direction-mover)
+  (comp:sprite :spec '(metadata atlas)
+               :block-alias :atlas-spritesheet
+               ;; :name is set in make-projectile.
+               :duration 1)
+  (comp:sphere :center (v3:zero)
+               :on-layer :enemy-bullet
+               :referent nil #++ (c:ref :self :component 'hit-points)
+               :radius 2f0)
+  (sketch :material 'sprite-atlas
+          :render-layer nil ;; to be set at prefab instancing time.
+          :slave (c:ref :self :component 'comp:sprite)))
+
+(c:define-prefab "blue-shot-small" (:library lib/main)
+  "Player 1's Blue Shot Small (derived from: /base-projectile)"
+  (("blue-shot-small" :link "/projectile")
+   (projectile (:policy :new-args)
+               :physics-layer :player-bullet
+               :depth-layer :player-bullet
+               :velocity (/ 320f0 .20f0))
+   (comp:sprite (:policy :new-args)
+                :name "blue-shot-small"
+                :frames 1
+                :duration 1f0)))
 
 ;; the venerable player.
 (c:define-prefab "player1-ship" (:library lib/main)
@@ -67,14 +106,13 @@
    (sketch :material 'sprite-atlas
            :render-layer :player
            :slave (c:ref :self :component 'comp:sprite))
-   #++("front-gun"
-       (comp:transform :translate (v3:vec 0f0 12f0 0f0))
-       #++(gun :physics-layer :player-bullet
-               :depth-layer :player-bullet
-               :name "bullet01"
-               :frames 8
-               :duration .5f0
-               :repeat nil))
+   ("front-gun"
+    (comp:transform :translate (v3:vec 0f0 14f0 0f0)) ;; 1/2 ship hight + bullet
+    (gun :name "blue-shot-small"
+         :frames 1
+         :duration 1f0
+         :fire-rate 6f0 ;; Hz (make sure evenly divisible from 120Hz
+         :repeat nil))
    ("exhaust"
     (comp:transform :translate (v3:vec 0f0 -16f0 0f0))
     (comp:sprite :spec '(metadata atlas)
@@ -87,9 +125,8 @@
             :render-layer :player
             :slave (c:ref :self :component 'comp:sprite)))))
 
-
-
-;; This acts like a scene, but is just a regular prefab.
+;; This acts like a scene, but is just a regular prefab and the
+;; initialization prefab when the game starts.
 (c:define-prefab "initial-scene" (:library lib/main)
 
   ;; The hack to implement render layers for psrites.

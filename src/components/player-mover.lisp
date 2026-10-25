@@ -127,6 +127,5 @@ usually observed from a dpad. The vector should be of magnitude 1."
                             final-movement-vec current-translation
                             region-cuboid)))
 
-
         ;; place myself where I should go.
         (c:translate self clipped-move :space :inertial)))))

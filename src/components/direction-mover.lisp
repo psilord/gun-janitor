@@ -42,8 +42,7 @@
                                   (:-z (v3:negate z)))
                                 direction)))
                         (move-delta (* velocity (c:delta context))))
-                   (v3:scale a move-delta)))
-               (goal-delta (v3:- (end-pos self) self-pos)))
+                   (v3:scale a move-delta))))
 
           ;; If we far away, keep moving, when we reach the endpoint, then
           ;; fixate ourselves to the endpoint.
@@ -52,11 +51,18 @@
           ;; than the displacement or the movement never reaches near
           ;; enough the end-pos or otherwise snap in visually annoying
           ;; ways. This implies that I should do this a very different
-          ;; way--like say using a marametric line mover.
-          (if (<= (v3:length goal-delta) (stop-radius self))
-              ;; snap exactly to the endpoint and stop moving.
-              (progn
-                (c:translate transform goal-delta :space :inertial)
-                (setf (moving-p self) nil))
+          ;; way--like say using a pamarametric line mover.
+
+          (if (end-pos self)
+              (let ((goal-delta (v3:- (end-pos self) self-pos)))
+                (if (<= (v3:length goal-delta) (stop-radius self))
+                    (progn
+                      ;; snap exactly to the endpoint and stop moving.
+                      (c:translate transform goal-delta :space :inertial)
+                      (setf (moving-p self) nil))
+                    ;; otheriwse, just move more.
+                    (c:translate transform movement-vec :space :inertial)))
               ;; otherwise, just move more.
-              (c:translate transform movement-vec :space :inertial)))))))
+              (c:translate transform movement-vec :space :inertial))
+
+          )))))

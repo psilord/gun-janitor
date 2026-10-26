@@ -40,7 +40,6 @@
     :text-ui
     :camera))
 
-;; TODO: Rename to base-projectile
 (c:define-prefab "base-projectile" (:library lib/main)
   "A generic projectile that can be a bullet, or an asteroid, or whatever."
   (projectile :transform (c:ref :self :component 'comp:transform)
@@ -69,7 +68,7 @@
           :render-layer nil ;; to be set at prefab instancing time.
           :slave (c:ref :self :component 'comp:sprite)))
 
-;; TODO: This prefab is broken, do not use yet.
+;; TODO: This prefab's component overrides are broken, do not use yet.
 ;; The component policy system seems broken.
 (c:define-prefab "blue-shot-small(broken)" (:library lib/main)
   "Player 1's Blue Shot Small"

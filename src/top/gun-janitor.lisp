@@ -147,7 +147,7 @@
     (comp:transform :translate (v3:vec 0f0 14f0 0f0)) ;; 1/2 ship hight + bullet
     (gun :prefab '(("blue-shot-small" lib/main))
          :fire-rate 6f0 ;; Hz (make sure evenly divisible from 120Hz
-         :repeat nil))
+         :repeat t))
    ("exhaust"
     (comp:transform :translate (v3:vec 0f0 -16f0 0f0))
     (comp:sprite :spec '(metadata atlas)

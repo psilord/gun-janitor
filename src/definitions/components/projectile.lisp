@@ -34,4 +34,6 @@
            :initform nil)
    (%sprite :accessor sprite
             :initarg :sprite
-            :initform nil)))
+            :initform nil)
+   (%destroy-ttl :accessor destroy-ttl
+                 :initarg :destroy-ttl)))

@@ -95,7 +95,8 @@
               :sprite (c:ref :self :component 'comp:sprite)
               :physics-layer :player-bullet
               :depth-layer :player-bullet
-              :velocity (/ 320f0 .20f0))
+              :velocity (/ 320f0 .20f0)
+              :destroy-ttl 1f0)
   ;; TODO: Fix plane to be unit sized.
   (comp:transform :scale (v3:vec 2f0 2f0 1f0))
   (tags :tags '(:dangerous))

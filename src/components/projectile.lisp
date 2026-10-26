@@ -6,7 +6,6 @@
                         &key
                           (parent nil)
                           (scale (v3:ones) scale-supplied-p)
-                          (destroy-ttl 2f0)
                           (direction :+y))
   (let* ((prefab-name (first prefab))
          (new-projectile
@@ -46,6 +45,6 @@
      (direction (mover projectile)) direction)
 
     ;; By default projectiles live a certain amount of time.
-    (c:destroy new-projectile :ttl destroy-ttl)
+    (c:destroy new-projectile :ttl (destroy-ttl projectile))
 
     new-projectile))

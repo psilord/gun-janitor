@@ -23,15 +23,7 @@
    (%cooldown-time :accessor cooldown-time
                    :initarg :cooldown-time
                    :initform 0f0)
-
    ;; name of the prefab to fire from the gun.
    (%prefab :accessor prefab
             :initarg :prefab
-            :initform nil)
-
-   ;; Hrm, this one here is a bit funny. It mesans I shoudl really break up my
-   ;; different projectiles into prefabs as opposed to collapsing the code
-   ;; together and parameterizing their construction.
-   (%repeat :accessor repeat
-            :initarg :repeat
-            :initform t)))
+            :initform nil)))

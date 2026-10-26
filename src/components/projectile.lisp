@@ -7,8 +7,7 @@
                           (parent nil)
                           (scale (v3:ones) scale-supplied-p)
                           (destroy-ttl 2f0)
-                          (direction :+y)
-                          (repeat t repeat-supplied-p))
+                          (direction :+y))
   (let* ((prefab-name (first prefab))
          (new-projectile
            (first (c:make-prefab-instance (c::core context) prefab
@@ -45,9 +44,6 @@
 
      ;; and, what direction is it going in?
      (direction (mover projectile)) direction)
-
-    (when repeat-supplied-p
-      (setf (comp:repeat (sprite projectile)) repeat))
 
     ;; By default projectiles live a certain amount of time.
     (c:destroy new-projectile :ttl destroy-ttl)

@@ -23,8 +23,7 @@
       (make-projectile context
                        (prefab self)
                        world-spawn-point
-                       current-rotation
-                       :repeat (repeat self)))))
+                       current-rotation))))
 
 (defmethod c:on-component-update ((self gun))
   (with-accessors ((context c:context)

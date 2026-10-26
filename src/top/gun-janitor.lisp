@@ -79,7 +79,8 @@
    (projectile (:policy :new-args)
                :physics-layer :player-bullet
                :depth-layer :player-bullet
-               :velocity (/ 320f0 .20f0))
+               :velocity (/ 320f0 .20f0)
+               :destroy-ttl .5f0)
    (comp:sprite (:policy :new-args)
                 :name "blue-shot-small"
                 :frames 1
@@ -96,7 +97,7 @@
               :physics-layer :player-bullet
               :depth-layer :player-bullet
               :velocity (/ 320f0 .20f0)
-              :destroy-ttl 1f0)
+              :destroy-ttl .5f0)
   ;; TODO: Fix plane to be unit sized.
   (comp:transform :scale (v3:vec 2f0 2f0 1f0))
   (tags :tags '(:dangerous))

@@ -72,7 +72,7 @@
 ;; The component policy system seems broken.
 (c:define-prefab "blue-shot-small(broken)" (:library lib/main)
   "Player 1's Blue Shot Small"
-  (("bullet/blue-shot-small" :copy "/base-projectile")
+  (("bullet/blue-shot-small" :link "/base-projectile")
    (comp:transform (:policy :new-args)
                    ;; TODO: Fix plane to be unit sized!
                    :scale (v3:vec 2f0 2f0 1f0))

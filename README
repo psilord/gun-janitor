@@ -28,14 +28,15 @@ Milestones:
   - Added these components:
     - player-mover
 
-- [IN PROGRESS] Add projectiles used for bullets, etc. (physics layers,
+- [DONE] Add projectiles used for bullets, etc. (physics layers,
   colliders, etc)
 
   - Added these components:
     - projectile
     - gun
 
-- Give players/enemies/bullets the concept of damage points and hit points.
+- [IN PROGRESS] Give players/enemies/bullets the concept of damage points
+  and hit points.
 
   - Added these componentS:
     - damage-points

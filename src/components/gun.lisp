@@ -18,19 +18,13 @@
            (world-spawn-point
              (c:transform-point emitter-transform v3:+zero+)))
 
-      ;; TODO: Implement a turret, which a gun has, that actually
+      ;; TODO: Implement an, which a gun controls, that actually
       ;; decides how to implement the firing.
       (make-projectile context
+                       (prefab self)
                        world-spawn-point
                        current-rotation
-                       :name (name self)
-                       :frames (frames self)
-                       :duration (duration self)
-                       :repeat (repeat self)
-                       ;; TODO: Fix plane mesh to be unit plane...
-                       :scale (v3:vec 2f0 2f0 1f0)
-                       :render-layer :player-bullet))
-    ))
+                       :repeat (repeat self)))))
 
 (defmethod c:on-component-update ((self gun))
   (with-accessors ((context c:context)

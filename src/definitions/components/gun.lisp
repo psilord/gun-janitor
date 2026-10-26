@@ -23,16 +23,12 @@
    (%cooldown-time :accessor cooldown-time
                    :initarg :cooldown-time
                    :initform 0f0)
-   ;; name and frames of projectile to fire.
-   (%name :accessor name
-          :initarg :name
-          :initform "blue-shot-small")
-   (%frames :accessor frames
-            :initarg :frames
-            :initform 1)
-   (%duration :accessor duration
-              :initarg :duration
-              :initform 1)
+
+   ;; name of the prefab to fire from the gun.
+   (%prefab :accessor prefab
+            :initarg :prefab
+            :initform nil)
+
    ;; Hrm, this one here is a bit funny. It mesans I shoudl really break up my
    ;; different projectiles into prefabs as opposed to collapsing the code
    ;; together and parameterizing their construction.

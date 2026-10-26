@@ -15,9 +15,7 @@
                                           :parent parent)))
          ;; TODO: I'm expecting the new-projectile to have components here
          ;; without having gone through the flow. BAD!
-         (projectile (c:component-by-type new-projectile 'projectile))
-         #++ (hit-points (c:component-by-type new-projectile 'hit-points))
-         #++ (sketch (c:component-by-type new-projectile 'sketch)))
+         (projectile (c:component-by-type new-projectile 'projectile)))
 
     ;; Set the spatial configuration
     (setf (v3:z translation) (dl (depth-layer projectile)))
@@ -29,7 +27,6 @@
     (when scale-supplied-p
       ;; And adjust the scale too.
       (c:scale new-projectile scale :instant t :replace t))
-
 
     (setf
      ;; Basic identification of the projectile

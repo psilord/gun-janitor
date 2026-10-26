@@ -89,7 +89,7 @@
            :render-layer :player-bullet)))
 
 (c:define-prefab "blue-shot-small" (:library lib/main)
-  "A generic projectile that can be a bullet, or an asteroid, or whatever."
+  "Player 1's Small Blue Shot"
   (projectile :transform (c:ref :self :component 'comp:transform)
               :mover (c:ref :self :component 'direction-mover)
               :collider (c:ref :self :component 'comp:sphere)

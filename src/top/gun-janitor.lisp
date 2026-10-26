@@ -154,7 +154,7 @@
                  :block-alias :atlas-spritesheet
                  :name "player1-exhaust-01"
                  :frames 2
-                 ;; 1/30 for a single frame, so 1/15 for both
+                 ;; 1/30 for a single cycle, so 1/15 for each frame
                  :duration .06f0)
     (sketch :material 'sprite-atlas
             :render-layer :player

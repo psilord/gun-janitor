@@ -253,6 +253,10 @@
     (comp:transform :translate (v3:vec -24f0 0f0 (dl :enemy))
                     :scale (v3:vec 2f0 2f0 1f0)))
 
+   (("enemy2" :link "/enemy1-ship")
+    (comp:transform :translate (v3:vec -48f0 0f0 (dl :enemy))
+                    :scale (v3:vec 2f0 2f0 1f0)))
+
    ;; a child of the scaffold
    (("player1" :link "/player1-ship")
     (comp:transform :translate (v3:vec 0f0 0f0 (dl :player))

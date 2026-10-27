@@ -66,7 +66,7 @@ References:
 
 -----------------------------------------------------------------------------
 
-Implementaiton notes:
+Implementation notes:
 
 ;; Support both of these for a physics DSL
 
@@ -106,6 +106,6 @@ Implementaiton notes:
      (C (A))
      (D (A B C))
      (E (A B C))
-     (F)
+     (F ())
      (G (D))))))
 

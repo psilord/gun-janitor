@@ -38,6 +38,8 @@ Milestones:
 - [IN PROGRESS] Add enemies, enemy movement, level spawn locations.
   Enemy shooting code.
 
+- Add enemy spawn points in level that spawn in the right circumstance.
+
 - Give players/enemies/bullets the concept of damage points and hit points.
 
   - Added these componentS:

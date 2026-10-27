@@ -63,3 +63,49 @@ Significant contributors:
 
 References:
    https://www.youtube.com/@MUTEKI_GAMEs/videos
+
+-----------------------------------------------------------------------------
+
+Implementaiton notes:
+
+;; Support both of these for a physics DSL
+
+(c:define-physics gun-janitor-physics ()
+  (c:physics-collision-layer-specification
+   (c:layer-ids
+    (A :ground)
+    (B :player)
+    (C :player-bullet)
+    (D :enemy)
+    (E :enemy-bullet)
+    (F :scenery)
+    (G :planet))
+   (c:collision-plan (:table)
+    ((  A B C D E F G)
+     (A y)
+     (B y !)
+     (C y ! !)
+     (D y y y !)
+     (E y y y ! !)
+     (F ! ! ! ! ! !)
+     (G ! ! ! y ! ! !)))))
+
+(c:define-physics gun-janitor-physics ()
+  (c:physics-collision-layer-specification
+   (c:layer-ids
+    (A :ground)
+    (B :player)
+    (C :player-bullet)
+    (D :enemy)
+    (E :enemy-bullet)
+    (F :scenery)
+    (G :planet))
+   (c:collision-plan (:list)
+    ((A (A))
+     (B (A))
+     (C (A))
+     (D (A B C))
+     (E (A B C))
+     (F)
+     (G (D))))))
+

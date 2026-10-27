@@ -42,11 +42,7 @@
                  (sprite sprite-data)
                  (opacity :float))
   (let ((color (texture (sampler sprite) uv)))
-    (vec4 (.rgb color) (* (.a color) opacity))
-    ;; Did I implement render-layers correctly?
-    #++(if (> (.a color) .05f0)
-           (vec4 (.rgb color) (* (.a color) opacity))
-           (discard))))
+    (vec4 (.rgb color) (* (.a color) opacity))))
 
 (define-shader atlas-shdr (:primitive :triangle-strip)
   (:vertex (sprite/v))

@@ -10,7 +10,8 @@
                             #'eq
                             :background -100f0
                             :background-damage -99f0
-                            :enemy-ship -.05f0
+                            :enemy -.05f0
+                            :enemy-blades -.045f0
                             :enemy-explosion -.04f0
                             :enemy-bullet -.03f0
                             :player-bullet -.02f0
@@ -29,7 +30,8 @@
 (defparameter *render-layer-order*
   '(:background
     :background-damage
-    :enemy-ship
+    :enemy
+    :enemy-blades
     :enemy-explosion
     :enemy-bullet
     :player-bullet
@@ -162,11 +164,53 @@
             :render-layer :player
             :slave (c:ref :self :component 'comp:sprite)))))
 
+(c:define-prefab "enemy1-ship" (:library lib/main)
+  "Enemy 1. Controls how it looks, collides, and movement."
+  (tags :tags '(:enemy))
+  #++(explosion :name "explode04-01" :frames 15
+                :scale (v3:vec 2f0 2f0 2f0))
+  #++(damage-points :dp 1)
+  #++(hit-points :hp 1
+                 :render-layer :player-explosion
+                 ;; When the player is born, they are automatically invulnerable
+                 ;; for 1 second.
+                 ;; TODO: NEED(!) to visualize this effect!
+                 :invulnerability-timer 1f0)
+  #++(player-movement :move-type :dpad-pivot
+                      :pivot-prefab '(("pivot-guide" ptp)))
+  #++(comp:sphere :center (v3:zero)
+                  :on-layer :player
+                  :referent (c:ref :self :component 'hit-points)
+                  :radius 30f0)
+  ("ship-body"
+   (comp:sprite :spec '(metadata atlas)
+                :block-alias :atlas-spritesheet
+                :name "helicopter-N")
+   (sketch :material 'sprite-atlas
+           :render-layer :enemy
+           :slave (c:ref :self :component 'comp:sprite))
+   ("front-gun"
+    (comp:transform :translate (v3:vec 0f0 14f0 0f0)) ;; 1/2 ship hight + bullet
+    #++(gun :prefab '(("enemy-shot-small" lib/main))
+            ;; Hz (make sure evenly divisible from 120Hz
+            :fire-rate 6f0))
+   ("blades"
+    (comp:transform :translate (v3:vec 0f0 0f0 0f0))
+    (comp:sprite :spec '(metadata atlas)
+                 :block-alias :atlas-spritesheet
+                 :name "helicopter-blade-01"
+                 :frames 2
+                 ;; 1/30 for a single cycle, so 1/15 for each frame
+                 :duration .06f0)
+    (sketch :material 'sprite-atlas
+            :render-layer :enemy-blades
+            :slave (c:ref :self :component 'comp:sprite)))))
+
 ;; This acts like a scene, but is just a regular prefab and the
 ;; initialization prefab when the game starts.
 (c:define-prefab "initial-scene" (:library lib/main)
 
-  ;; The hack to implement render layers for psrites.
+  ;; The hack to implement render layers for sprites.
   (delayed-render :layer-order *render-layer-order*)
   (tags :tags '(:delayed-render-system))
 
@@ -205,8 +249,12 @@
     (comp:transform :translate (v3:vec 0f0 0f0 0f0))
     (comp:camera :zoom 1.5f0))
 
+   (("enemy1" :link "/enemy1-ship")
+    (comp:transform :translate (v3:vec -24f0 0f0 (dl :enemy))
+                    :scale (v3:vec 2f0 2f0 1f0)))
+
    ;; a child of the scaffold
    (("player1" :link "/player1-ship")
-    (comp:transform :translate (v3:vec 0f0 0f0 0f0)
-                    :scale (v3:vec 2f0 2f0 0f0))
+    (comp:transform :translate (v3:vec 0f0 0f0 (dl :player))
+                    :scale (v3:vec 2f0 2f0 1f0))
     (player-mover :gamepad-id :gamepad1))))

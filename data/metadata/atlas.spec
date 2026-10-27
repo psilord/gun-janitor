@@ -55,8 +55,8 @@
  (:id "helicopter-SE" :x 0 :y 192 :w 32 :h 32)
 
  ;; Alternate the last two at 30 hz over helicopter sprite
- (:id "helicopter-blade-00" :x 32 :y 192 :w 32 :h 32)
- (:id "helicopter-blade-01" :x 64 :y 192 :w 32 :h 32)
+ (:id "helicopter-blade-01" :x 32 :y 192 :w 32 :h 32)
+ (:id "helicopter-blade-02" :x 64 :y 192 :w 32 :h 32)
 
  ;; Explosion 01
  (:id "explosion01-01" :x 48 :y 0 :w 24 :h 24)

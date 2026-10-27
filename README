@@ -35,18 +35,15 @@ Milestones:
     - projectile
     - gun
 
-- [IN PROGRESS] Give players/enemies/bullets the concept of damage points
-  and hit points.
+- [IN PROGRESS] Add enemies, enemy movement, level spawn locations.
+  Enemy shooting code.
+
+- Give players/enemies/bullets the concept of damage points and hit points.
 
   - Added these componentS:
     - damage-points
     - hit-points
-
-- Add enemies, enemy movement, level spawn locations. Enemy shooting code.
-
-  - Added these component:
     - explosion
-    - TODO
 
 - Add bitmap font, player score, maquettes for num players left, hang this
   stuff under the scaffold.

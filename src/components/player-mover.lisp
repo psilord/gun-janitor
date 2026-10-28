@@ -27,46 +27,6 @@ displacement taking the deadzone size into consideration."
                     movement-vec)))
       movement-vec)))
 
-(defun quantize-analog-movement-vector-to-8-way (analog-movement-vec)
-  "We expect the ANALOG-MOVEMENT-VECTOR to be a vec3 with X, Y, 0f0 for its
-components. Return a vector that is, wrt the local space, one of 8 directions
-usually observed from a dpad. The vector should be of magnitude 1."
-
-  (v3:with-components ((l analog-movement-vec))
-    (let* ((angle (atan ly lx))
-           (angle (if (minusp angle)
-                      (+ o:pi (- o:pi (abs angle)))
-                      angle)))
-      ;; TODO: Optimize this alittle, maybe add new nw, ne, se, sw directions
-      ;; into the v3 constants.
-      (cond
-        ((v3:zero-p analog-movement-vec)
-         v3:+zero+)
-        ;; east
-        ((or (>= angle o:15pi/8) (< angle o:pi/8))
-         v3:+right+)
-        ;; north east
-        ((and (>= angle o:pi/8) (< angle o:3pi/8))
-         (v3:normalize (v3:+ v3:+up+ v3:+right+)))
-        ;; north
-        ((and (>= angle o:3pi/8) (< angle o:5pi/8))
-         v3:+up+)
-        ;; north west
-        ((and (>= angle o:5pi/8) (< angle o:7pi/8))
-         (v3:normalize (v3:+ v3:+up+ v3:+left+)))
-        ;; west
-        ((and (>= angle o:7pi/8) (< angle o:9pi/8))
-         v3:+left+)
-        ;; south west
-        ((and (>= angle o:9pi/8) (< angle o:11pi/8))
-         (v3:normalize (v3:+ v3:+left+ v3:+down+)))
-        ;; south
-        ((and (>= angle o:11pi/8) (< angle o:13pi/8))
-         v3:+down+)
-        ;; south east
-        ((and (>= angle o:13pi/8) (< angle o:15pi/8))
-         (v3:normalize (v3:+ v3:+right+ v3:+down+)))))))
-
 (defmethod c:on-component-update ((self player-mover))
   (with-accessors ((context c:context) (max-velocity max-velocity)
                    (translate-deadzone translate-deadzone)
@@ -94,7 +54,7 @@ usually observed from a dpad. The vector should be of magnitude 1."
              (get-deadzone-corrected-gamepad-analog
               self :radial-scaled `(,gamepad-id :left-stick)))
            (analog-movement-vec
-             (quantize-analog-movement-vector-to-8-way analog-movement-vec)))
+             (quantize-xy-vector-to-8-way analog-movement-vec)))
 
       (let* (;; Mix the dpad and analog-stick vectors. Normally only one
              ;; will be used at a time, but if both are, attempt to let

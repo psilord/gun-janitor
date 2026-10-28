@@ -28,7 +28,7 @@
    (:module "base"
     :serial t
     :components
-    ())
+    ((:file "math-utilities")))
 
    ;; Subdirectory that contains many definitions of entities in your code.
    (:module "definitions"

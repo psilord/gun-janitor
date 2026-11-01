@@ -29,20 +29,28 @@ Milestones:
     - player-mover
 
 - [DONE] Add projectiles used for bullets, etc. (physics layers,
-  colliders, etc)
+  colliders, etc). Add a single bullet emitter that's good enough to use for
+  a while.
 
   - Added these components:
     - projectile
+    - emitter-split-arc
     - gun
 
-- [IN PROGRESS] Add enemies, enemy movement, level spawn locations.
-  Enemy shooting code.
+    Currently, no damage can be taken or inflicted.
+
+- Add enemies, enemy movement, level spawn locations.
+  Sprite orientation code. Enemy shooting code.
+
+  - Added these components:
 
 - Add enemy spawn points in level that spawn in the right circumstance.
 
+  - Added these components:
+
 - Give players/enemies/bullets the concept of damage points and hit points.
 
-  - Added these componentS:
+  - Added these components:
     - damage-points
     - hit-points
     - explosion

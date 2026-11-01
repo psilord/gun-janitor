@@ -10,12 +10,14 @@
   ((%gamepad-id :accessor gamepad-id
                 :initarg :gamepad-id
                 :initform :gamepad1)
+   ;; The actor's transform which identifies the direction the mitter uses.
    (%emitter-transform :accessor emitter-transform
                        :initarg :emitter-transform
                        :initform nil)
-   (%rotate-deadzone :accessor rotate-deadzone
-                     :initarg :rotate-deadzone
-                     :initform .1f0)
+   ;; The emitter component that does the emitting of the bullets.
+   (%emitter :accessor emitter
+             :initarg :emitter
+             :initform nil)
    (%fire-rate :accessor fire-rate
                :initarg :fire-rate
                :initform 30f0) ;; hz

@@ -34,7 +34,7 @@
    :attributes (:depth :lequal)
    :uniforms ((:sprite.sampler 'sprite-atlas)
               (:sprite.index 0)
-              (:opacity 1.0))
+              (:opacity 1f0))
    :blocks ((:block-name :atlas-spritesheet
              :storage-type :buffer
              :block-alias :atlas-spritesheet

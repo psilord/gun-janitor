@@ -5,32 +5,13 @@
   (with-accessors ((actor c:actor) (emitter-transform emitter-transform)) self
     (setf emitter-transform (c:component-by-type actor 'comp:transform))))
 
-(defun fire-a-projectile (self)
-  (with-accessors ((context c:context)
-                   (rotate-deadzone rotate-deadzone)
-                   (fire-rate fire-rate)
-                   (cooldown-time cooldown-time)
-                   (emitter-transform emitter-transform)
-                   (gamepad-id gamepad-id))
-      self
-
-    (let* ((current-rotation (c:get-rotation self :space :model))
-           (world-spawn-point
-             (c:transform-point emitter-transform v3:+zero+)))
-
-      ;; TODO: Implement an, which a gun controls, that actually
-      ;; decides how to implement the firing.
-      (make-projectile context
-                       (prefab self)
-                       world-spawn-point
-                       current-rotation))))
-
 (defmethod c:on-component-update ((self gun))
   (with-accessors ((context c:context)
                    (rotate-deadzone rotate-deadzone)
                    (fire-rate fire-rate)
                    (cooldown-time cooldown-time)
                    (emitter-transform emitter-transform)
+                   (emitter emitter)
                    (depth-layer depth-layer)
                    (gamepad-id gamepad-id))
       self
@@ -40,6 +21,7 @@
     ;; instead.
     (let ((start-firing-p (c:on-button-enter context gamepad-id :a))
           (continue-firing-p (c:on-button-enabled context gamepad-id :a))
+          (stop-firing-p (c:on-button-exit context gamepad-id :a))
           (firing-period (/ fire-rate)))
 
       ;; TODO: I could make a macro to do this syntax work, like
@@ -50,7 +32,8 @@
       ;; elsewhere becomes possible. Will think about for later.
       (cond
         (start-firing-p
-         (fire-a-projectile self)
+         (engage-emitter emitter emitter-transform
+                         start-firing-p continue-firing-p stop-firing-p)
          (setf cooldown-time 0f0))
 
         (continue-firing-p
@@ -62,9 +45,15 @@
             (loop :while (>= cooldown-time firing-period)
                   :do (decf cooldown-time firing-period))
 
-            (fire-a-projectile self))
+            (engage-emitter emitter emitter-transform
+                            start-firing-p continue-firing-p stop-firing-p))
 
            ;; Just accumulate more physics time at the rate we're
            ;; interested in until we know we can fire again.
            (t
-            (incf cooldown-time (* fire-rate (c:delta context))))))))))
+            ;; TODO: get the real relationship between frame and delta
+            ;; time to implement a firing rate in Hz properly.
+            (incf cooldown-time (* fire-rate
+                                   ;; Conversion factor for c:delta into Hz.
+                                   (/ (/ 60f0) (c:delta context))
+                                   (c:delta context))))))))))

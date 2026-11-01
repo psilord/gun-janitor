@@ -63,6 +63,7 @@
        (:file "delayed-render")
        (:file "player-mover")
        (:file "projectile")
+       (:file "emitter-split-arc")
        (:file "gun")))))
 
    ;; Your component methods all go here. In general, another large chunk of
@@ -83,6 +84,7 @@
      (:file "delayed-render")
      (:file "player-mover")
      (:file "projectile")
+     (:file "emitter-split-arc")
      (:file "gun")))
 
    ;; All prefabs go in here. a prefab must be defined before it is referenced.

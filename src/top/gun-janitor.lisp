@@ -149,9 +149,22 @@
            :slave (c:ref :self :component 'comp:sprite))
    ("front-gun"
     (comp:transform :translate (v3:vec 0f0 14f0 0f0)) ;; 1/2 ship hight + bullet
-    (gun :prefab '(("blue-shot-small" lib/main))
+    (gun :emitter (c:ref :self :component 'emitter-split-arc)
          ;; Hz (make sure evenly divisible from 120Hz
-         :fire-rate 6f0))
+         :fire-rate 2f0)
+    (emitter-split-arc :prefab '(("blue-shot-small" lib/main))
+                       :up :z
+                       :direction :y
+                       :radius 0f0 ;; >= 0f0, 0 means emit from origin of actor.
+                       ;; Below is: #(#(num-shots pos-rot neg-rot) ...)
+                       ;; The rotation is in terms of the :direction vector.
+                       ;;
+                       ;; TODO: Implement difficulty (flags to skip entries in
+                       ;; pattern.)
+                       :spread-patterns `#(#(1 0f0 0f0)
+                                           #(2 ,o:pi/8 ,(- o:pi/8))
+                                           #(3 ,o:pi/8 ,(- o:pi/8))
+                                           #(10 ,o:pi/2 ,(- o:pi/2)))))
    ("exhaust"
     (comp:transform :translate (v3:vec 0f0 -16f0 0f0))
     (comp:sprite :spec '(metadata atlas)
@@ -191,9 +204,18 @@
            :slave (c:ref :self :component 'comp:sprite))
    ("front-gun"
     (comp:transform :translate (v3:vec 0f0 14f0 0f0)) ;; 1/2 ship hight + bullet
-    #++(gun :prefab '(("enemy-shot-small" lib/main))
-            ;; Hz (make sure evenly divisible from 120Hz
-            :fire-rate 6f0))
+    (emitter-split-arc :prefab '(("blue-shot-small" lib/main))
+                       :up :z
+                       :direction :y
+                       :radius 0f0 ;; >= 0f0, zero mean point emission
+                       :spread-patterns `#(#(1 0f0 0f0)))
+
+    ;; TODO: Disable the gun, enemies fire a different way.
+    #++
+    (gun :emitter (c:ref :self :component 'emitter-split-arc)
+         ;; Hz (make sure evenly divisible from 120Hz
+         :fire-rate 6f0)
+    )
    ("blades"
     (comp:transform :translate (v3:vec 0f0 0f0 0f0))
     (comp:sprite :spec '(metadata atlas)

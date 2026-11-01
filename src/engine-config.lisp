@@ -55,8 +55,11 @@
      :roots (all-ordered-types))
   (subdag all-ordered-types
           ((splice core-types)
+           ;; TODO: fix symbol names to be external.
+           -> gun-janitor::gun
+           -> gun-janitor::emitter-arc
            -> gun-janitor::direction-mover
-           -> gun-janitor::sketch ;; TODO: fix symbol names to be external.
+           -> gun-janitor::sketch
            -> gun-janitor::delayed-render
            -> (splice all-unknown-types))))
 

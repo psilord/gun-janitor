@@ -12,14 +12,14 @@
            (first (c:make-prefab-instance (c::core context) prefab
                                           :parent parent)))
          ;; TODO: I'm expecting the new-projectile to have components here
-         ;; without having gone through the flow. BAD!
+         ;; without having gone through the component flow. Need to reconsider
+         ;; the component initialization expectations.
          (projectile (c:component-by-type new-projectile 'projectile)))
 
     ;; Set the spatial configuration
     (setf (v3:z translation) (dl (depth-layer projectile)))
     (c:translate new-projectile translation :instant t :replace t
                                             :space :inertial)
-    ;; XXX This interface needs to take a quat here also
     (c:rotate new-projectile rotation :instant t :replace t)
 
     (when scale-supplied-p

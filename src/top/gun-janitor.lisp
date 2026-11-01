@@ -42,6 +42,24 @@
     :text-ui
     :camera))
 
+(defun test-shot-pattern-0 ()
+  ;; Below is: #(#(num-shots pos-rot neg-rot) ...)
+  ;; The rotation is in terms of the :direction vector.
+  `#(#(1 0f0 0f0)
+     #(2 ,o:pi/8 ,(- o:pi/8))
+     #(3 ,o:pi/8 ,(- o:pi/8))
+     #(10 ,o:pi/2 ,(- o:pi/2))))
+
+(defun shot-pattern-0 (size)
+  (loop :with shots = (make-array size)
+        :for index :from 0 :below size
+        :do (setf (aref shots index)
+                  (vector 3
+                          (* (/ o:pi 16f0) index)
+                          (* (/ o:pi -16f0) index)))
+        :finally (return shots)))
+
+
 (c:define-prefab "base-projectile" (:library lib/main)
   "A generic projectile that can be a bullet, or an asteroid, or whatever."
   (projectile :transform (c:ref :self :component 'comp:transform)
@@ -156,15 +174,10 @@
                        :up :z
                        :direction :y
                        :radius 0f0 ;; >= 0f0, 0 means emit from origin of actor.
-                       ;; Below is: #(#(num-shots pos-rot neg-rot) ...)
-                       ;; The rotation is in terms of the :direction vector.
-                       ;;
                        ;; TODO: Implement difficulty (flags to skip entries in
                        ;; pattern.)
-                       :spread-patterns `#(#(1 0f0 0f0)
-                                           #(2 ,o:pi/8 ,(- o:pi/8))
-                                           #(3 ,o:pi/8 ,(- o:pi/8))
-                                           #(10 ,o:pi/2 ,(- o:pi/2)))))
+                       :spread-patterns (shot-pattern-0 9)
+                       ))
    ("exhaust"
     (comp:transform :translate (v3:vec 0f0 -16f0 0f0))
     (comp:sprite :spec '(metadata atlas)

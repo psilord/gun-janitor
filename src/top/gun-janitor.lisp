@@ -45,6 +45,9 @@
 (defun test-shot-pattern-0 ()
   ;; Below is: #(#(num-shots pos-rot neg-rot) ...)
   ;; The rotation is in terms of the :direction vector.
+  ;;
+  ;; TODO: Implement difficulty (flags to skip entries in
+  ;; pattern.)
   `#(#(1 0f0 0f0)
      #(2 ,o:pi/8 ,(- o:pi/8))
      #(3 ,o:pi/8 ,(- o:pi/8))
@@ -174,8 +177,6 @@
                        :up :z
                        :direction :y
                        :radius 0f0 ;; >= 0f0, 0 means emit from origin of actor.
-                       ;; TODO: Implement difficulty (flags to skip entries in
-                       ;; pattern.)
                        :spread-patterns (shot-pattern-0 9)
                        ))
    ("exhaust"

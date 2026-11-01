@@ -151,7 +151,7 @@
     (comp:transform :translate (v3:vec 0f0 14f0 0f0)) ;; 1/2 ship hight + bullet
     (gun :emitter (c:ref :self :component 'emitter-split-arc)
          ;; Hz (make sure evenly divisible from 120Hz
-         :fire-rate 2f0)
+         :fire-rate 10f0)
     (emitter-split-arc :prefab '(("blue-shot-small" lib/main))
                        :up :z
                        :direction :y

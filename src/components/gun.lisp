@@ -22,7 +22,8 @@
     (let ((start-firing-p (c:on-button-enter context gamepad-id :a))
           (continue-firing-p (c:on-button-enabled context gamepad-id :a))
           (stop-firing-p (c:on-button-exit context gamepad-id :a))
-          (firing-period (/ fire-rate)))
+          (firing-period (/ fire-rate))
+          (delta (c:delta context)))
 
       ;; TODO: I could make a macro to do this syntax work, like
       ;; WITH-COMPONENT-TIMER that knows about start/continue, the
@@ -51,12 +52,10 @@
            ;; Just accumulate more physics time at the rate we're
            ;; interested in until we know we can fire again.
            (t
-            ;; TODO: get the real relationship between frame and delta
-            ;; time to implement a firing rate in Hz properly.
             (incf cooldown-time (* fire-rate
                                    ;; Conversion factor for c:delta into Hz.
-                                   (/ (/ 60f0) (c:delta context))
-                                   (c:delta context)))))))
+                                   (/ (/ 60f0) delta)
+                                   delta))))))
 
       ;; finally, if we also stopped firing this frame, tell the emitter
       ;; that too.

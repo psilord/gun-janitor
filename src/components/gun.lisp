@@ -56,4 +56,10 @@
             (incf cooldown-time (* fire-rate
                                    ;; Conversion factor for c:delta into Hz.
                                    (/ (/ 60f0) (c:delta context))
-                                   (c:delta context))))))))))
+                                   (c:delta context)))))))
+
+      ;; finally, if we also stopped firing this frame, tell the emitter
+      ;; that too.
+      (when stop-firing-p
+        (engage-emitter emitter emitter-transform
+                        start-firing-p continue-firing-p stop-firing-p)))))

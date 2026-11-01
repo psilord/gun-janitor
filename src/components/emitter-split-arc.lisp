@@ -65,6 +65,9 @@ VALUE."
                    (step-idx step-idx))
       self
 
-    (fire-the-pattern-step self emitter-transform
-                           (aref spread-patterns step-idx))
-    (setf step-idx (mod (1+ step-idx) (length spread-patterns)))))
+    (when (or start-firing-p continue-firing-p)
+      (fire-the-pattern-step self emitter-transform
+                             (aref spread-patterns step-idx)))
+    (if stop-firing-p
+        (setf step-idx 0)
+        (setf step-idx (mod (1+ step-idx) (length spread-patterns))))))

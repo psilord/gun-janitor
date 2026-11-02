@@ -14,9 +14,6 @@
    (%emitter-transform :accessor emitter-transform
                        :initarg :emitter-transform
                        :initform nil)
-   (%prefab :accessor prefab
-            :initarg :prefab
-            :initform nil)
    (%up :accessor up
         :initarg :up
         :initform :z)

@@ -32,6 +32,8 @@ VALUE."
            (arc-pos (aref pattern-step 1))
            ;; arm-neg is clockwise rotation from dir in radians
            (arc-neg (aref pattern-step 2))
+           ;; The prefab we're to emit in this step.
+           (prefab (aref pattern-step 3))
            ;; slerp interpolant from arc-po to arc-neg.
            (arc-interp (float (/ (ensure-positive (1- num-shots))) 1f0))
            ;; First, copy and rotate the current-rotation to the
@@ -53,7 +55,7 @@ VALUE."
                        (q:slerp start-rotation end-rotation delta-arc)))
                  ;; TODO: Implement radius.
                  (make-projectile context
-                                  (prefab self)
+                                  prefab
                                   world-spawn-point
                                   slerped-rotation))))))
 

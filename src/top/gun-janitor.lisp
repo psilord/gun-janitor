@@ -42,24 +42,25 @@
     :text-ui
     :camera))
 
-(defun test-shot-pattern-0 ()
-  ;; Below is: #(#(num-shots pos-rot neg-rot) ...)
+(defun test-shot-pattern-0 (prefab)
+  ;; Below is: #(#(num-shots pos-rot neg-rot prefab) ...)
   ;; The rotation is in terms of the :direction vector.
   ;;
   ;; TODO: Implement difficulty (flags to skip entries in
   ;; pattern.)
-  `#(#(1 0f0 0f0)
-     #(2 ,o:pi/8 ,(- o:pi/8))
-     #(3 ,o:pi/8 ,(- o:pi/8))
-     #(10 ,o:pi/2 ,(- o:pi/2))))
+  `#(#(1 0f0 0f0 ,prefab)
+     #(2 ,o:pi/8 ,(- o:pi/8) ,prefab)
+     #(3 ,o:pi/8 ,(- o:pi/8) ,prefab)
+     #(10 ,o:pi/2 ,(- o:pi/2) ,prefab)))
 
-(defun shot-pattern-0 (size)
-  (loop :with shots = (make-array size)
-        :for index :from 0 :below size
+(defun shot-pattern-0 (num-shots prefab)
+  (loop :with shots = (make-array num-shots)
+        :for index :from 0 :below num-shots
         :do (setf (aref shots index)
                   (vector 3
                           (* (/ o:pi 16f0) index)
-                          (* (/ o:pi -16f0) index)))
+                          (* (/ o:pi -16f0) index)
+                          prefab))
         :finally (return shots)))
 
 
@@ -173,12 +174,11 @@
     (gun :emitter (c:ref :self :component 'emitter-split-arc)
          ;; Hz (make sure evenly divisible from 120Hz
          :fire-rate 10f0)
-    (emitter-split-arc :prefab '(("blue-shot-small" lib/main))
-                       :up :z
+    (emitter-split-arc :up :z
                        :direction :y
                        :radius 0f0 ;; >= 0f0, 0 means emit from origin of actor.
-                       :spread-patterns (shot-pattern-0 9)
-                       ))
+                       :spread-patterns
+                       (shot-pattern-0 9 '(("blue-shot-small" lib/main)))))
    ("exhaust"
     (comp:transform :translate (v3:vec 0f0 -16f0 0f0))
     (comp:sprite :spec '(metadata atlas)
@@ -218,11 +218,11 @@
            :slave (c:ref :self :component 'comp:sprite))
    ("front-gun"
     (comp:transform :translate (v3:vec 0f0 14f0 0f0)) ;; 1/2 ship hight + bullet
-    (emitter-split-arc :prefab '(("blue-shot-small" lib/main))
-                       :up :z
+    (emitter-split-arc :up :z
                        :direction :y
                        :radius 0f0 ;; >= 0f0, zero mean point emission
-                       :spread-patterns `#(#(1 0f0 0f0)))
+                       :spread-patterns
+                       `#(#(1 0f0 0f0 '(("blue-shot-small" lib/main)))))
 
     ;; TODO: Disable the gun, enemies fire a different way.
     #++

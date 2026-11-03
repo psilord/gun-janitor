@@ -23,7 +23,7 @@
 (c:define-texture level-0 (:texture-2d x:clamp-all-edges)
   (:texture-min-filter :nearest)
   (:texture-mag-filter :nearest)
-  (:data #((textures level-0))))
+  (:data #((textures level-0-0-1))))
 
 (c:define-texture sprite-atlas (:texture-2d)
   (:texture-min-filter :nearest)

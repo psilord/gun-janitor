@@ -32,8 +32,10 @@ VALUE."
            (arc-pos (aref pattern-step 1))
            ;; arm-neg is clockwise rotation from dir in radians
            (arc-neg (aref pattern-step 2))
+           ;; Should I slerp the long way around the sphere?
+           (slerp-short-way (aref pattern-step 3))
            ;; The prefab we're to emit in this step.
-           (prefab (aref pattern-step 3))
+           (prefab (aref pattern-step 4))
            ;; slerp interpolant from arc-po to arc-neg.
            (arc-interp (float (/ (ensure-positive (1- num-shots))) 1f0))
            ;; First, copy and rotate the current-rotation to the
@@ -52,7 +54,8 @@ VALUE."
             :for delta-arc = (* arc-interp shot-idx)
             :do
                (let ((slerped-rotation
-                       (q:slerp start-rotation end-rotation delta-arc)))
+                       (q:slerp start-rotation end-rotation delta-arc
+                                slerp-short-way)))
                  ;; TODO: Implement radius.
                  (make-projectile context
                                   prefab

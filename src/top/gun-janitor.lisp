@@ -58,7 +58,7 @@
         :for index :from 0 :below num-shots
         :for pos-angle = (* (o:pi 1f0 16f0) index)
         :for neg-angle = (* (o:pi 1f0 -16f0) index)
-        :for slerp-short-way-p = (> o:pi (+ pos-angle (abs neg-angle)))
+        :for slerp-short-way-p = (< (+ pos-angle (abs neg-angle)) o:pi)
         :do (setf (aref shots index)
                   (vector 3
                           pos-angle

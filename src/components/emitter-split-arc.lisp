@@ -36,7 +36,7 @@ VALUE."
            (slerp-short-way (aref pattern-step 3))
            ;; The prefab we're to emit in this step.
            (prefab (aref pattern-step 4))
-           ;; slerp interpolant from arc-po to arc-neg.
+           ;; slerp interpolant from arc-pos to arc-neg.
            (arc-interp (float (/ (ensure-positive (1- num-shots))) 1f0))
            ;; First, copy and rotate the current-rotation to the
            ;; arc-pos rotation.

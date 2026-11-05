@@ -254,6 +254,10 @@
   (delayed-render :layer-order *render-layer-order*)
   (tags :tags '(:delayed-render-system))
 
+  ;; Handle asking user for which gamepad they want to use when applicable
+  ;; and route the right input events to the right places.
+  (input-handler)
+
   ;; level is in a plane, whose original size was (-1, -1) to (1, 1) and
   ;; will be scaled to (-240,-3600) to (240, 3600), and does not move. The scale
   ;; is 240 by 3600... the size of the background in pixels.

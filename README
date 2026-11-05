@@ -30,6 +30,7 @@ Milestones:
   non-rotating player. Support dpad and analog stick.
 
   - Added these components:
+    - input-handler
     - player-mover
 
 - [DONE] Add projectiles used for bullets, etc. (physics layers,

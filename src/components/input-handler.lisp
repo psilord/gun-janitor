@@ -45,6 +45,7 @@
          (format t ";; ###################################################~%")
          (format t ";;~%")
          (format t ";; Player 1: Please choose a gamepad by number...~%")
+         (format t ";;~%")
          (let* ((gpad-choice (read-integer-in-range-safe 0 (1- num-gamepads)))
                 (gpad (nth gpad-choice gamepads))
                 (id (c:gamepad-id gpad))

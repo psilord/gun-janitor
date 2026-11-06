@@ -2,7 +2,10 @@
 
 (defmethod c:on-component-attach ((self gun) actor)
   (declare (ignore actor))
-  (with-accessors ((actor c:actor) (emitter-transform emitter-transform)) self
+  (with-accessors ((actor c:actor)
+                   (emitter-transform emitter-transform)
+                   (input-handler input-handler))
+      self
     (setf emitter-transform (c:component-by-type actor 'comp:transform))))
 
 (defmethod c:on-component-update ((self gun))
@@ -13,17 +16,18 @@
                    (emitter-transform emitter-transform)
                    (emitter emitter)
                    (depth-layer depth-layer)
-                   (gamepad-id gamepad-id))
+                   (input-handler input-handler))
       self
 
     ;; TODO: Maybe move this stuff into the player controls component
     ;; and just check for "should I be shooting right now" boolean
     ;; instead.
-    (let ((start-firing-p (c:on-button-enter context gamepad-id :a))
-          (continue-firing-p (c:on-button-enabled context gamepad-id :a))
-          (stop-firing-p (c:on-button-exit context gamepad-id :a))
-          (firing-period (/ fire-rate))
-          (delta (c:delta context)))
+    (let* ((gamepad-id (player-1-gamepad-id input-handler))
+           (start-firing-p (c:on-button-enter context gamepad-id :a))
+           (continue-firing-p (c:on-button-enabled context gamepad-id :a))
+           (stop-firing-p (c:on-button-exit context gamepad-id :a))
+           (firing-period (/ fire-rate))
+           (delta (c:delta context)))
 
       ;; TODO: I could make a macro to do this syntax work, like
       ;; WITH-COMPONENT-TIMER that knows about start/continue, the

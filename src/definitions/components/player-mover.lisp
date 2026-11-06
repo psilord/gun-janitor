@@ -10,9 +10,9 @@
 
 (c:define-component player-mover ()
   (;; which gamepad to use for a player-mover instance.
-   (%gamepad-id :accessor gamepad-id
-                :initarg :gamepad-id
-                :initform :gamepad1)
+   (%input-handler :accessor input-handler
+                   :initarg :input-handler
+                   :initform nil)
    (%transform :accessor transform
                :initarg :transform
                :initform nil)

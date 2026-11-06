@@ -31,10 +31,12 @@ displacement taking the deadzone size into consideration."
   (with-accessors ((context c:context) (max-velocity max-velocity)
                    (translate-deadzone translate-deadzone)
                    (region-cuboid region-cuboid)
-                   (gamepad-id gamepad-id))
+                   (gamepad-id gamepad-id)
+                   (input-handler input-handler))
       self
 
-    (let* (;; First, read the dpad signals.
+    (let* ((gamepad-id (player-1-gamepad-id input-handler))
+           ;; First, read the dpad signals.
            (left (c:on-button-enabled context gamepad-id :left))
            (right (c:on-button-enabled context gamepad-id :right))
            (up (c:on-button-enabled context gamepad-id :up))

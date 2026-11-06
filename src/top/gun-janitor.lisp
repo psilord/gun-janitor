@@ -175,7 +175,8 @@
            :slave (c:ref :self :component 'comp:sprite))
    ("front-gun"
     (comp:transform :translate (v3:vec 0f0 14f0 0f0)) ;; 1/2 ship hight + bullet
-    (gun :emitter (c:ref :self :component 'emitter-split-arc)
+    (gun :input-handler (c:ref "/initial-scene" :component 'input-handler)
+         :emitter (c:ref :self :component 'emitter-split-arc)
          ;; Hz (make sure evenly divisible from 120Hz
          :fire-rate 10f0)
     (emitter-split-arc :up :z
@@ -305,4 +306,5 @@
    (("player1" :link "/player1-ship")
     (comp:transform :translate (v3:vec 0f0 0f0 (dl :player))
                     :scale (v3:vec 2f0 2f0 1f0))
-    (player-mover :gamepad-id :gamepad1))))
+    (player-mover :input-handler (c:ref "/initial-scene"
+                                        :component 'input-handler)))))

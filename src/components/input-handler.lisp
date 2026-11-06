@@ -41,7 +41,7 @@
                :for idx :from 0 :by 1
                :do (let* ((id (c:gamepad-id gpad))
                           (name (c:gamepad-name gpad)))
-                     (format t ";; ~A: (~(~S~)) [~S]~%" idx id name)))
+                     (format t ";;   ~A: (~(~S~)) [~S]~%" idx id name)))
          (format t ";; ###################################################~%")
          (format t ";;~%")
          (format t ";; Player 1: Please choose a gamepad by number...~%")

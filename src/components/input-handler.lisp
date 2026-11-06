@@ -49,5 +49,5 @@
                 (gpad (nth gpad-choice gamepads))
                 (id (c:gamepad-id gpad))
                 (name (c:gamepad-name gpad)))
-           (format t ";; Player 1 chose gamepad: ~(~S~) [~S]~%" id name)
+           (format t "~&;; Player 1 chose gamepad: ~(~S~) [~S]~%" id name)
            (setf player-1-gamepad-id id)))))))

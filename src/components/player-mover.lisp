@@ -36,21 +36,34 @@ displacement taking the deadzone size into consideration."
       self
 
     (let* ((gamepad-id (player-1-gamepad-id input-handler))
-           ;; First, read the dpad signals.
-           (left (c:on-button-enabled context gamepad-id :left))
-           (right (c:on-button-enabled context gamepad-id :right))
-           (up (c:on-button-enabled context gamepad-id :up))
-           (down (c:on-button-enabled context gamepad-id :down))
+           ;; First, read the dpad /kb signals.
+           (dpad-left (c:on-button-enabled context gamepad-id :left))
+           (kb-left (c:on-button-enabled context :key :left))
+           (dpad-right (c:on-button-enabled context gamepad-id :right))
+           (kb-right (c:on-button-enabled context :key :right))
+           (dpad-up (c:on-button-enabled context gamepad-id :up))
+           (kb-up (c:on-button-enabled context :key :up))
+           (dpad-down (c:on-button-enabled context gamepad-id :down))
+           (kb-down (c:on-button-enabled context :key :down))
+           (left (or dpad-left kb-left))
+           (right (or dpad-right kb-right))
+           (up (or dpad-up kb-up))
+           (down (or dpad-down kb-down))
+           ;; Finally compute movement vector.
            (dpad-movement-vec
              (v3:+ (v3:+ (if left v3:+left+ v3:+zero+)
                          (if right v3:+right+ v3:+zero+))
                    (v3:+ (if up v3:+up+ v3:+zero+)
                          (if down v3:+down+ v3:+zero+))))
-           ;; Then read the half-speed button.
-           (speed-control
-             (if (c:on-button-enabled context gamepad-id :left-shoulder)
-                 .5f0
-                 1f0))
+
+           ;; Then read the half-speed gamepad or kb button.
+           (gpad-half-speed
+             (c:on-button-enabled context gamepad-id :left-shoulder))
+           (kb-half-speed
+             (c:on-button-enabled context :key :lshift))
+           (half-speed (or gpad-half-speed kb-half-speed))
+           (speed-control (if half-speed .5f0 1f0))
+
            ;; Then, read the left analog stick
            (analog-movement-vec
              (get-deadzone-corrected-gamepad-analog

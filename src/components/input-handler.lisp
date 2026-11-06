@@ -26,7 +26,7 @@
            (num-gamepads (length gamepads)))
       (cond
         ((zerop num-gamepads)
-         (format t "ERROR: GUN-JANITOR requires a gamepad at this time.~%"))
+         (format t "GUN-JANITOR detects no gamepads. Keyboard always works.~%"))
         ((= num-gamepads 1)
          (let* ((gpad (first gamepads))
                 (id (c:gamepad-id gpad))

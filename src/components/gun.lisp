@@ -22,10 +22,19 @@
     ;; TODO: Maybe move this stuff into the player controls component
     ;; and just check for "should I be shooting right now" boolean
     ;; instead.
+
+    ;; TODO: Don't mix keyboard and gamepad events at this time, they will mess
+    ;; each other up. I need to have one override the other in those cases.
     (let* ((gamepad-id (player-1-gamepad-id input-handler))
-           (start-firing-p (c:on-button-enter context gamepad-id :a))
-           (continue-firing-p (c:on-button-enabled context gamepad-id :a))
-           (stop-firing-p (c:on-button-exit context gamepad-id :a))
+           (gpad-start-firing-p (c:on-button-enter context gamepad-id :a))
+           (kb-start-firing-p (c:on-button-enter context :key :z))
+           (gpad-continue-firing-p (c:on-button-enabled context gamepad-id :a))
+           (kb-continue-firing-p (c:on-button-enabled context :key :z))
+           (gpad-stop-firing-p (c:on-button-exit context gamepad-id :a))
+           (kb-stop-firing-p (c:on-button-exit context :key :z))
+           (start-firing-p (or gpad-start-firing-p kb-start-firing-p))
+           (continue-firing-p (or gpad-continue-firing-p kb-continue-firing-p))
+           (stop-firing-p (or gpad-stop-firing-p kb-stop-firing-p))
            (firing-period (/ fire-rate))
            (delta (c:delta context)))
 

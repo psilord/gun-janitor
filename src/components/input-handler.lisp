@@ -20,7 +20,6 @@
                    (player-1-gamepad-id player-1-gamepad-id))
       self
 
-    (format t "number entered: ~A~%" (read-line))
     (let* ((gamepads (c:get-gamepads
                       (c::input-data
                        (c::core context))))

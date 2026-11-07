@@ -44,14 +44,9 @@ Milestones:
 
     Currently, no damage can be taken or inflicted.
 
-- [DONE] Add enemies into the world.
+- [DONE] Add non-moving, non-rotating, non-shooting enemies into the world.
 
-  - Prefab work.
-
-- Fix enemies to pick the right sprites as they rotate around.
-
-  -Added these components
-    - sprite-orienter
+  - Simple prefab work.
 
 - Give players/enemies/bullets the concept of damage points and hit points.
   Add in colliders (and the protocol APIs to the referents) as needed.
@@ -61,11 +56,17 @@ Milestones:
     - hit-points
     - explosion
 
-, Enemy movement.
+  Fixate which actors are on which physics layers.
+
+- Enemy movement, autonomous steering behavior, waypoints and paths, etc.
 
   Sprite orientation code. Enemy shooting code.
 
-  - Added these components:
+  - Added these components
+    - sprite-orienter (pick the right N, NE, S, SE, etc sprite)
+    - enemy-mover (or a collection for different kinds of movement).
+
+- Design all the player/enemy weapons and their spreads.
 
 - Add enemy spawn points in level that spawn in the right circumstance.
 
@@ -89,10 +90,10 @@ References:
 
 Implementation notes:
 
-;; Support both of these for a physics DSL
+;; Support both of these for a physics DSL in Colony.
 
-(c:define-physics gun-janitor-physics ()
-  (c:physics-collision-layer-specification
+(c:define-physics-config gun-janitor-physics ()
+  (c:collision-layers
    (c:layer-ids
     (A :ground)
     (B :player)
@@ -111,8 +112,8 @@ Implementation notes:
      (F ! ! ! ! ! !)
      (G ! ! ! y ! ! !)))))
 
-(c:define-physics gun-janitor-physics ()
-  (c:physics-collision-layer-specification
+(c:define-physics-config gun-janitor-physics ()
+  (c:collision-layers
    (c:layer-ids
     (A :ground)
     (B :player)

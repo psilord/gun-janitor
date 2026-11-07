@@ -44,12 +44,17 @@ Milestones:
 
     Currently, no damage can be taken or inflicted.
 
-- Add enemies
+- [DONE] Add enemies into the world.
 
   - Prefab work.
 
+- Fix enemies to pick the right sprites as they rotate around.
+
+  -Added these components
+    - sprite-orienter
+
 - Give players/enemies/bullets the concept of damage points and hit points.
-  Add in colliders as needed.
+  Add in colliders (and the protocol APIs to the referents) as needed.
 
   - Added these components:
     - damage-points
@@ -70,7 +75,7 @@ Milestones:
   stuff under the scaffold.
 
 - Add director and reifiy state changes in game: splash screen, level-0 start,
-  spawning, warning banner, dying, game over, you win.
+  spawning, warning banner, boss behavior, dying, game over, you win.
 
 -----------------------------------------------------------------------------
 

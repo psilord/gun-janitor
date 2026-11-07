@@ -90,7 +90,8 @@ References:
 
 Implementation notes:
 
-;; Support both of these for a physics DSL in Colony.
+;; Support both of these for a physics DSL in Colony. Collision plans are
+;; commutative. If A collides with B, then B will always collide with A.
 
 (c:define-physics-config gun-janitor-physics ()
   (c:collision-layers
@@ -103,14 +104,15 @@ Implementation notes:
     (F :scenery)
     (G :planet))
    (c:collision-plan (:table)
+    ;; rows and columns are REQUIRED to be in same order.
     ((  A B C D E F G)
      (A y)
-     (B y !)
-     (C y ! !)
-     (D y y y !)
-     (E y y y ! !)
-     (F ! ! ! ! ! !)
-     (G ! ! ! y ! ! !)))))
+     (B y n)
+     (C y n n)
+     (D y y y n)
+     (E y y y n n)
+     (F n n n n n n)
+     (G n n n y n n n)))))
 
 (c:define-physics-config gun-janitor-physics ()
   (c:collision-layers
@@ -123,11 +125,13 @@ Implementation notes:
     (F :scenery)
     (G :planet))
    (c:collision-plan (:list)
-    ((A (A))
-     (B (A))
-     (C (A))
-     (D (A B C))
-     (E (A B C))
-     (F ())
-     (G (D))))))
+    ;; all layers must be represented.
+    ;; The symbol :-> means "collides with"
+    ((A :-> (A))
+     (B :-> (A))
+     (C :-> (A))
+     (D :-> (A B C))
+     (E :-> (A B C))
+     (F :-> ())
+     (G :-> (D))))))
 

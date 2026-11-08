@@ -50,8 +50,11 @@ Milestones:
 
 - Give players/enemies/bullets the concept of damage points and hit points.
   Add in colliders (and the protocol APIs to the referents) as needed.
+  With this update, enemies and the player can blow up and die.
 
   - Added these components:
+    - ship-computer
+    - modified projectile to have damage-points/hit-points reference slots.
     - damage-points
     - hit-points
     - explosion

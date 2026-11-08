@@ -36,4 +36,10 @@
             :initarg :sprite
             :initform nil)
    (%destroy-ttl :accessor destroy-ttl
-                 :initarg :destroy-ttl)))
+                 :initarg :destroy-ttl)
+   (%hit-points :accessor hit-points
+                :initarg :hit-points
+                :initform nil)
+   (%damage-points :accessor damage-points
+                   :initarg :damage-points
+                   :initform nil)))

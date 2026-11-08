@@ -65,7 +65,10 @@
        (:file "player-mover")
        (:file "projectile")
        (:file "emitter-split-arc")
-       (:file "gun")))))
+       (:file "gun")
+       (:file "damage-points")
+       (:file "hit-points")
+       (:file "ship-computer")))))
 
    ;; Your component methods all go here. In general, another large chunk of
    ;; game code resides here.
@@ -105,4 +108,5 @@
    (:module "top"
     :serial t
     :components
-    ((:file "gun-janitor")))))
+    ((:file "collision-response")
+     (:file "gun-janitor")))))

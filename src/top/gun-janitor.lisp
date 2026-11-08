@@ -125,13 +125,15 @@
               :physics-layer :player-bullet
               :depth-layer :player-bullet
               :velocity (/ 320f0 .20f0)
-              :destroy-ttl .5f0)
+              :destroy-ttl .5f0
+              :damage-points (c:ref :self :component 'damage-points)
+              :hit-points (c:ref :self :component 'hit-points))
   ;; TODO: Fix plane to be unit sized.
   (comp:transform :scale (v3:vec 2f0 2f0 1f0))
   (tags :tags '(:dangerous))
-  ;;(damage-points :dp 1)
+  (damage-points :dp 1)
+  (hit-points :hp 1)
   ;;(explosion :name "explode01-01" :frames 8)
-  ;;(hit-points :hp 1)
   (direction-mover)
   (comp:sprite :spec '(metadata atlas)
                :block-alias :atlas-spritesheet
@@ -151,22 +153,21 @@
 (c:define-prefab "player1-ship" (:library lib/main)
   "The venerable Player Ship. Controls how it looks, collides, and movement."
   (tags :tags '(:player))
+  (damage-points :dp 1)
+  (hit-points :hp 1)
+  (ship-computer :spawn-invulnerable-p t
+                 :spawn-invulnerability-time .5f0 ;; seconds
+                 :hit-points (c:ref :self :component 'hit-points)
+                 :damage-points (c:ref :self :component 'damage-points)
+                 )
   #++(explosion :name "explode04-01" :frames 15
                 :scale (v3:vec 2f0 2f0 2f0))
-  #++(damage-points :dp 1)
-  #++(hit-points :hp 1
-                 :render-layer :player-explosion
-                 ;; When the player is born, they are automatically invulnerable
-                 ;; for 1 second.
-                 ;; TODO: NEED(!) to visualize this effect!
-                 :invulnerability-timer 1f0)
-  #++(player-movement :move-type :dpad-pivot
-                      :pivot-prefab '(("pivot-guide" ptp)))
-  #++(comp:sphere :center (v3:zero)
-                  :on-layer :player
-                  :referent (c:ref :self :component 'hit-points)
-                  :radius 30f0)
   ("ship-body"
+   (comp:sphere :center (v3:zero)
+                :on-layer :player
+                :referent (c:ref "../" :component 'ship-computer)
+                :visualize t
+                :radius 6f0)
    (comp:sprite :spec '(metadata atlas)
                 :block-alias :atlas-spritesheet
                 :name "player1")
@@ -199,22 +200,20 @@
 (c:define-prefab "enemy1-ship" (:library lib/main)
   "Enemy 1. Controls how it looks, collides, and movement."
   (tags :tags '(:enemy))
+  (damage-points :dp 1)
+  (hit-points :hp 1)
+  (ship-computer :spawn-invulnerable-p nil
+                 :spawn-invulnerability-time 0f0 ;; seconds
+                 :hit-points (c:ref :self :component 'hit-points)
+                 :damage-points (c:ref :self :component 'damage-points)
+                 )
   #++(explosion :name "explode04-01" :frames 15
                 :scale (v3:vec 2f0 2f0 2f0))
-  #++(damage-points :dp 1)
-  #++(hit-points :hp 1
-                 :render-layer :player-explosion
-                 ;; When the player is born, they are automatically invulnerable
-                 ;; for 1 second.
-                 ;; TODO: NEED(!) to visualize this effect!
-                 :invulnerability-timer 1f0)
-  #++(player-movement :move-type :dpad-pivot
-                      :pivot-prefab '(("pivot-guide" ptp)))
-  #++(comp:sphere :center (v3:zero)
-                  :on-layer :player
-                  :referent (c:ref :self :component 'hit-points)
-                  :radius 30f0)
   ("ship-body"
+   (comp:sphere :center (v3:zero)
+                :on-layer :enemy
+                :referent (c:ref "../" :component 'ship-computer)
+                :radius 6f0)
    (comp:sprite :spec '(metadata atlas)
                 :block-alias :atlas-spritesheet
                 :name "helicopter-N")
@@ -295,10 +294,6 @@
     (comp:camera :zoom 1.5f0))
 
    (("enemy1" :link "/enemy1-ship")
-    (comp:transform :translate (v3:vec -24f0 0f0 (dl :enemy))
-                    :scale (v3:vec 2f0 2f0 1f0)))
-
-   (("enemy2" :link "/enemy1-ship")
     (comp:transform :translate (v3:vec -48f0 0f0 (dl :enemy))
                     :scale (v3:vec 2f0 2f0 1f0)))
 

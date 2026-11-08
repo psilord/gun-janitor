@@ -142,7 +142,7 @@
                :duration 1f0)
   (comp:sphere :center (v3:zero)
                :on-layer :enemy-bullet
-               :referent nil #++ (c:ref :self :component 'hit-points)
+               :referent (c:ref :self :component 'projectile)
                :radius 2f0)
   (sketch :material 'sprite-atlas
           :render-layer :player-bullet

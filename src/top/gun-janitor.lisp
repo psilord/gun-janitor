@@ -76,7 +76,7 @@
 
 
 ;; Player 1's basic shot.
-(c:define-prefab "blue-shot-small" (:library lib/main)
+(c:define-prefab "red-shot-small" (:library lib/main)
   "Player 1's Small Blue Shot"
   (projectile :transform (c:ref :self :component 'comp:transform)
               :mover (c:ref :self :component 'direction-mover)
@@ -98,7 +98,7 @@
              :render-layer :player-bullet-explosion)
   (comp:sprite :spec '(metadata atlas)
                :block-alias :atlas-spritesheet
-               :name "blue-shot-small"
+               :name "red-shot-small"
                :frames 1
                :duration 1f0)
   (comp:sphere :center (v3:zero)
@@ -145,7 +145,7 @@
                        :direction :y
                        :radius 0f0 ;; >= 0f0, 0 means emit from origin of actor.
                        :spread-patterns
-                       (shot-pattern-0 16 '(("blue-shot-small" lib/main)))))
+                       (shot-pattern-0 16 '(("red-shot-small" lib/main)))))
    ("exhaust"
     (comp:transform :translate (v3:vec 0f0 -16f0 0f0))
     (comp:sprite :spec '(metadata atlas)
@@ -187,7 +187,7 @@
                        :direction :y
                        :radius 0f0 ;; >= 0f0, zero mean point emission
                        :spread-patterns
-                       `#(#(1 0f0 0f0 t '(("blue-shot-small" lib/main)))))
+                       `#(#(1 0f0 0f0 t '(("enemy-shot-small" lib/main)))))
 
     ;; TODO: Disable the gun, enemies fire a different way.
     #++

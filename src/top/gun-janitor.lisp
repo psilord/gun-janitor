@@ -80,7 +80,7 @@
   "Player 1's Small Blue Shot"
   (projectile :transform (c:ref :self :component 'comp:transform)
               :mover (c:ref :self :component 'direction-mover)
-              :collider (c:ref :self :component 'comp:sphere)
+              :collider (c:ref :self :component 'comp:cuboid)
               :sprite (c:ref :self :component 'comp:sprite)
               :physics-layer :player-bullet
               :depth-layer :player-bullet
@@ -101,10 +101,19 @@
                :name "red-shot-small"
                :frames 1
                :duration 1f0)
-  (comp:sphere :center (v3:zero)
+  (comp:cuboid :center (v3:zero)
+               ;; TODO: Visualize is broken cause I need to change properties
+               ;; about the material being used during the debugging render.
+               ;; :visualize t
                :on-layer :player-bullet
                :referent (c:ref :self :component 'projectile)
-               :radius 2f0)
+               :center (v3:zero)
+               :minx -1f0
+               :maxx 1f0
+               :miny -1f0
+               :maxy 1f0
+               :minz -1f0
+               :maxz 1f0)
   (sketch :material 'sprite-atlas
           :render-layer :player-bullet
           :slave (c:ref :self :component 'comp:sprite)))

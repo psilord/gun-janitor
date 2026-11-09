@@ -229,7 +229,7 @@
                ;; TODO: When this is misnamed, the error is extremely obscure
                :name "bullet-explosion01-01"
                :frames 2
-               :duration .25f0
+               :duration .20f0
                :repeat nil)
   (sketch :material 'sprite-atlas
           :render-layer nil ;; set by the creator of this prefab.

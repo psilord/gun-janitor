@@ -54,12 +54,13 @@ Milestones:
 
   - Added these components:
     - ship-computer
-    - modified projectile to have damage-points/hit-points reference slots.
+    - projectile fixed to have damage-points/hit-points reference slots.
     - damage-points
     - hit-points
     - explosion
 
-  Fixate which actors are on which physics layers.
+  Fixate which actors are on which physics layers. Fixate that explosions
+  occur on the right render layers.
 
 - Enemy movement, autonomous steering behavior, waypoints and paths, etc.
 
@@ -89,6 +90,8 @@ Milestones:
 References:
    https://www.youtube.com/@MUTEKI_GAMEs/videos
 
+-----------------------------------------------------------------------------
+DESIRED ENGINE FEATURES
 -----------------------------------------------------------------------------
 
 Implementation notes:
@@ -137,4 +140,61 @@ Implementation notes:
      (E :-> (A B C))
      (F :-> ())
      (G :-> (D))))))
+
+
+--------------------------------------------------------------------------
+BROKEN ENGINE STUFF
+--------------------------------------------------------------------------
+
+This (prefab component argument inheritance) is broken. Fix it later.
+
+
+(c:define-prefab "base-projectile(broken)" (:library lib/main)
+  "A generic projectile that can be a bullet, or an asteroid, or whatever."
+  (projectile :transform (c:ref :self :component 'comp:transform)
+              :mover (c:ref :self :component 'direction-mover)
+              :collider (c:ref :self :component 'comp:sphere)
+              :sprite (c:ref :self :component 'comp:sprite)
+              ;; These next ones are over-layed in more detailed prefabs.
+              :physics-layer :unknown-physics-layer
+              :depth-layer :unknown-depth-layer
+              :velocity 0f0)
+  (tags :tags '(:dangerous))
+  ;;(damage-points :dp 1)
+  ;;(explosion :name "explode01-01" :frames 8)
+  ;;(hit-points :hp 1)
+  (direction-mover)
+  (comp:sprite :spec '(metadata atlas)
+               :block-alias :atlas-spritesheet
+               ;; :name is set in make-projectile.
+               :frames 1
+               :duration 1f0)
+  (comp:sphere :center (v3:zero)
+               :on-layer :enemy-bullet
+               :referent nil #++ (c:ref :self :component 'hit-points)
+               :radius 2f0)
+  (sketch :material 'sprite-atlas
+          :render-layer nil ;; to be set at prefab instancing time.
+          :slave (c:ref :self :component 'comp:sprite)))
+
+;; TODO: This prefab's component overrides are broken, do not use yet.
+;; The component policy system seems broken.
+(c:define-prefab "blue-shot-small(broken)" (:library lib/main)
+  "Player 1's Blue Shot Small"
+  (("bullet/blue-shot-small" :link "/base-projectile")
+   (comp:transform (:policy :new-args)
+                   ;; TODO: Fix plane to be unit sized!
+                   :scale (v3:vec 2f0 2f0 1f0))
+   (projectile (:policy :new-args)
+               :physics-layer :player-bullet
+               :depth-layer :player-bullet
+               :velocity (/ 320f0 .20f0)
+               :destroy-ttl .5f0
+               :explosion-layer :bullet-explosion)
+   (comp:sprite (:policy :new-args)
+                :name "blue-shot-small"
+                :frames 1
+                :duration 1f0)
+   (sketch (:policy :new-args)
+           :render-layer :player-bullet)))
 

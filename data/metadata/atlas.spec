@@ -66,4 +66,10 @@
  (:id "explosion01-05" :x 144 :y 0 :w 24 :h 24)
  (:id "explosion01-06" :x 168 :y 0 :w 24 :h 24)
  (:id "explosion01-07" :x 192 :y 0 :w 24 :h 24)
- (:id "explosion01-08" :x 216 :y 0 :w 24 :h 24))
+ (:id "explosion01-08" :x 216 :y 0 :w 24 :h 24)
+
+ ;; Small bullet explosion which is a subset of Explosion 01
+ ;; (The first and last frames, it is very fast.)
+ (:id "bullet-explosion01-01" :x 48 :y 0 :w 24 :h 24)
+ (:id "bullet-explosion01-02" :x 216 :y 0 :w 24 :h 24)
+ )

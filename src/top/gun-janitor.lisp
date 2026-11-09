@@ -10,6 +10,8 @@
                             #'eq
                             :background -100f0
                             :background-damage -99f0
+                            :enemy-bullet-explosion -.07f0
+                            :player-bullet-explosion -.06f0
                             :enemy -.05f0
                             :enemy-blades -.045f0
                             :enemy-explosion -.04f0
@@ -23,13 +25,18 @@
                             :camera 100f0))
 
 (defun dl (draw-layer-name)
-  (u:href *draw-layer* draw-layer-name))
+  (let ((chosen-layer (u:href *draw-layer* draw-layer-name)))
+    (unless chosen-layer
+      (error "(DL ~(~S~)): bad draw layer!" draw-layer-name))
+    chosen-layer))
 
 ;; NOTE: Must be same order as the z axis layering above. Last it greatest Z,
 ;; first is least Z.
 (defparameter *render-layer-order*
   '(:background
     :background-damage
+    :enemy-bullet-explosion
+    :player-bullet-explosion
     :enemy
     :enemy-blades
     :enemy-explosion
@@ -68,54 +75,7 @@
         :finally (return shots)))
 
 
-(c:define-prefab "base-projectile" (:library lib/main)
-  "A generic projectile that can be a bullet, or an asteroid, or whatever."
-  (projectile :transform (c:ref :self :component 'comp:transform)
-              :mover (c:ref :self :component 'direction-mover)
-              :collider (c:ref :self :component 'comp:sphere)
-              :sprite (c:ref :self :component 'comp:sprite)
-              ;; These next ones are over-layed in more detailed prefabs.
-              :physics-layer :unknown-physics-layer
-              :depth-layer :unknown-depth-layer
-              :velocity 0f0)
-  (tags :tags '(:dangerous))
-  ;;(damage-points :dp 1)
-  ;;(explosion :name "explode01-01" :frames 8)
-  ;;(hit-points :hp 1)
-  (direction-mover)
-  (comp:sprite :spec '(metadata atlas)
-               :block-alias :atlas-spritesheet
-               ;; :name is set in make-projectile.
-               :frames 1
-               :duration 1f0)
-  (comp:sphere :center (v3:zero)
-               :on-layer :enemy-bullet
-               :referent nil #++ (c:ref :self :component 'hit-points)
-               :radius 2f0)
-  (sketch :material 'sprite-atlas
-          :render-layer nil ;; to be set at prefab instancing time.
-          :slave (c:ref :self :component 'comp:sprite)))
-
-;; TODO: This prefab's component overrides are broken, do not use yet.
-;; The component policy system seems broken.
-(c:define-prefab "blue-shot-small(broken)" (:library lib/main)
-  "Player 1's Blue Shot Small"
-  (("bullet/blue-shot-small" :link "/base-projectile")
-   (comp:transform (:policy :new-args)
-                   ;; TODO: Fix plane to be unit sized!
-                   :scale (v3:vec 2f0 2f0 1f0))
-   (projectile (:policy :new-args)
-               :physics-layer :player-bullet
-               :depth-layer :player-bullet
-               :velocity (/ 320f0 .20f0)
-               :destroy-ttl .5f0)
-   (comp:sprite (:policy :new-args)
-                :name "blue-shot-small"
-                :frames 1
-                :duration 1f0)
-   (sketch (:policy :new-args)
-           :render-layer :player-bullet)))
-
+;; Player 1's basic shot.
 (c:define-prefab "blue-shot-small" (:library lib/main)
   "Player 1's Small Blue Shot"
   (projectile :transform (c:ref :self :component 'comp:transform)
@@ -127,21 +87,22 @@
               :velocity (/ 320f0 .20f0)
               :destroy-ttl .5f0
               :damage-points (c:ref :self :component 'damage-points)
-              :hit-points (c:ref :self :component 'hit-points))
-  ;; TODO: Fix plane to be unit sized.
-  (comp:transform :scale (v3:vec 2f0 2f0 1f0))
+              :hit-points (c:ref :self :component 'hit-points)
+              :explosion (c:ref :self :component 'explosion))
   (tags :tags '(:dangerous))
+  (comp:transform :scale (v3:vec 2f0 2f0 1f0)) ;; TODO: fix plane to unit size.
+  (direction-mover)
   (damage-points :dp 1)
   (hit-points :hp 1)
-  ;;(explosion :name "explode01-01" :frames 8)
-  (direction-mover)
+  (explosion :prefab '("generic-bullet-explosion" lib/main)
+             :render-layer :player-bullet-explosion)
   (comp:sprite :spec '(metadata atlas)
                :block-alias :atlas-spritesheet
                :name "blue-shot-small"
                :frames 1
                :duration 1f0)
   (comp:sphere :center (v3:zero)
-               :on-layer :enemy-bullet
+               :on-layer :player-bullet
                :referent (c:ref :self :component 'projectile)
                :radius 2f0)
   (sketch :material 'sprite-atlas
@@ -152,16 +113,16 @@
 ;; the venerable player.
 (c:define-prefab "player1-ship" (:library lib/main)
   "The venerable Player Ship. Controls how it looks, collides, and movement."
-  (tags :tags '(:player))
-  (damage-points :dp 1)
-  (hit-points :hp 1)
   (ship-computer :spawn-invulnerable-p t
                  :spawn-invulnerability-time .5f0 ;; seconds
                  :hit-points (c:ref :self :component 'hit-points)
                  :damage-points (c:ref :self :component 'damage-points)
-                 )
-  #++(explosion :name "explode04-01" :frames 15
-                :scale (v3:vec 2f0 2f0 2f0))
+                 :explosion (c:ref :self :component 'explosion))
+  (tags :tags '(:player))
+  (damage-points :dp 1)
+  (hit-points :hp 1)
+  (explosion :prefab '("generic-ship-explosion" lib/main)
+             :render-layer :player-explosion)
   ("ship-body"
    (comp:sphere :center (v3:zero)
                 :on-layer :player
@@ -199,16 +160,16 @@
 
 (c:define-prefab "enemy1-ship" (:library lib/main)
   "Enemy 1. Controls how it looks, collides, and movement."
-  (tags :tags '(:enemy))
-  (damage-points :dp 1)
-  (hit-points :hp 1)
   (ship-computer :spawn-invulnerable-p nil
                  :spawn-invulnerability-time 0f0 ;; seconds
                  :hit-points (c:ref :self :component 'hit-points)
                  :damage-points (c:ref :self :component 'damage-points)
-                 )
-  #++(explosion :name "explode04-01" :frames 15
-                :scale (v3:vec 2f0 2f0 2f0))
+                 :explosion (c:ref :self :component 'explosion))
+  (tags :tags '(:enemy))
+  (damage-points :dp 1)
+  (hit-points :hp 1)
+  (explosion :prefab '("generic-ship-explosion" lib/main)
+             :render-layer :enemy-explosion)
   ("ship-body"
    (comp:sphere :center (v3:zero)
                 :on-layer :enemy
@@ -245,6 +206,34 @@
     (sketch :material 'sprite-atlas
             :render-layer :enemy-blades
             :slave (c:ref :self :component 'comp:sprite)))))
+
+(c:define-prefab "generic-ship-explosion" (:library lib/main)
+  "A generic explosion that can be customized when created."
+  (comp:transform :scale (v3:vec 2f0 2f0 1f0))
+  (comp:sprite :spec '(metadata atlas)
+               :block-alias :atlas-spritesheet
+               ;; TODO: When this is misnamed, the error is extremely obscure
+               :name "explosion01-01"
+               :frames 8
+               :duration 0.5f0
+               :repeat nil)
+  (sketch :material 'sprite-atlas
+          :render-layer nil ;; set by the instantiator of this prefab.
+          :slave (c:ref :self :component 'comp:sprite)))
+
+(c:define-prefab "generic-bullet-explosion" (:library lib/main)
+  "Used for when a bullet hits something."
+  (comp:transform :scale (v3:vec 2f0 2f0 1f0))
+  (comp:sprite :spec '(metadata atlas)
+               :block-alias :atlas-spritesheet
+               ;; TODO: When this is misnamed, the error is extremely obscure
+               :name "bullet-explosion01-01"
+               :frames 2
+               :duration .25f0
+               :repeat nil)
+  (sketch :material 'sprite-atlas
+          :render-layer nil ;; set by the creator of this prefab.
+          :slave (c:ref :self :component 'comp:sprite)))
 
 ;; This acts like a scene, but is just a regular prefab and the
 ;; initialization prefab when the game starts.
@@ -293,8 +282,18 @@
     (comp:transform :translate (v3:vec 0f0 0f0 0f0))
     (comp:camera :zoom 1.5f0))
 
+   ;; Test enemies for killing.
    (("enemy1" :link "/enemy1-ship")
     (comp:transform :translate (v3:vec -48f0 0f0 (dl :enemy))
+                    :scale (v3:vec 2f0 2f0 1f0)))
+   (("enemy2" :link "/enemy1-ship")
+    (comp:transform :translate (v3:vec -96f0 0f0 (dl :enemy))
+                    :scale (v3:vec 2f0 2f0 1f0)))
+   (("enemy3" :link "/enemy1-ship")
+    (comp:transform :translate (v3:vec -48f0 72f0 (dl :enemy))
+                    :scale (v3:vec 2f0 2f0 1f0)))
+   (("enemy4" :link "/enemy1-ship")
+    (comp:transform :translate (v3:vec -96f0 72f0 (dl :enemy))
                     :scale (v3:vec 2f0 2f0 1f0)))
 
    ;; a child of the scaffold

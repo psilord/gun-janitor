@@ -23,4 +23,8 @@
    ;; A reference to the hit-points component.
    (%hit-points :accessor hit-points
                 :initarg :hit-points
-                :initform nil)))
+                :initform nil)
+   ;; A reference to an explosion component.
+   (%explosion :accessor explosion
+               :initarg :explosion
+               :initform nil)))

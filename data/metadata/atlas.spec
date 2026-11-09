@@ -14,7 +14,7 @@
  (:id "power-blue" :x 16 :y 32 :w 16 :h 16)
  (:id "power-red" :x 32 :y 32 :w 16 :h 16)
 
- ;; Player shot A
+ ;; Player shot A (Don't use)
  (:id "blue-shot-small" :x 0 :y 48 :w 16 :h 16)
  (:id "blue-shot-medium" :x 16 :y 48 :w 16 :h 16)
  (:id "blue-shot-large" :x 32 :y 48 :w 16 :h 16)
@@ -26,7 +26,7 @@
  (:id "enemy-shot-large" :x 32 :y 64 :w 16 :h 16)
  (:id "enemy-shot-huge" :x 48 :y 64 :w 16 :h 16)
 
- ;; Player shot B
+ ;; Player shot A and B
  (:id "red-shot-small" :x 0 :y 80 :w 16 :h 16)
  (:id "red-shot-medium" :x 16 :y 80 :w 16 :h 16)
  (:id "red-shot-large" :x 32 :y 80 :w 16 :h 16)

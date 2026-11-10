@@ -48,9 +48,9 @@ Milestones:
 
   - Simple prefab work.
 
-- Give players/enemies/bullets the concept of damage points and hit points.
-  Add in colliders (and the protocol APIs to the referents) as needed.
-  With this update, enemies and the player can blow up and die.
+- [DONE] Give players/enemies/bullets the concept of damage points and hit
+  points.  Add in colliders (and the protocol APIs to the referents) as needed.
+  With this milestone, enemies and the player can blow up and die.
 
   - Added these components:
     - ship-computer
@@ -60,7 +60,7 @@ Milestones:
     - explosion
 
   Fixate which actors are on which physics layers. Fixate that explosions
-  occur on the right render layers.
+  occur on the right render layers (and at the right place in the z-buffer).
 
 - Enemy movement, autonomous steering behavior, waypoints and paths, etc.
 

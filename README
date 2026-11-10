@@ -62,6 +62,13 @@ Milestones:
   Fixate which actors are on which physics layers. Fixate that explosions
   occur on the right render layers (and at the right place in the z-buffer).
 
+  This means we finally implement on-collider-enter and friends for various
+  components which figure out what to do when certain colliders collide.
+
+- Add bumper colliders to the scaffold to catch bullets that are exiting the
+  playfield and destroy them. This replaces the ttl time for bullets which was
+  always the wrong solution.
+
 - Enemy movement, autonomous steering behavior, waypoints and paths, etc.
 
   Sprite orientation code. Enemy shooting code.

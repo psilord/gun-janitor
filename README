@@ -65,9 +65,15 @@ Milestones:
   This means we finally implement on-collider-enter and friends for various
   components which figure out what to do when certain colliders collide.
 
-- Add bumper colliders to the scaffold to catch bullets that are exiting the
+- Add sandbag colliders to the scaffold to catch bullets that are exiting the
   playfield and destroy them. This replaces the ttl time for bullets which was
-  always the wrong solution.
+  always the wrong solution. Ensure to write the collision response code so
+  that it checks for full containment of the bullet collider before
+  destroying it. It is insufficient to just destroy on enter. The entire bullet
+  must be off screen (or at least its collision volume).
+
+  - Added these components:
+    - sandbag - compute of bullet is fully inside, then destroy if so.
 
 - Enemy movement, autonomous steering behavior, waypoints and paths, etc.
 

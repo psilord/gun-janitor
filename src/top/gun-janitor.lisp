@@ -244,6 +244,60 @@
           :render-layer nil ;; set by the creator of this prefab.
           :slave (c:ref :self :component 'comp:sprite)))
 
+(c:define-prefab "sandbags" (:library lib/main)
+  "Sandbags, one pixel beyond, the edges of the screen. They catch bullets."
+  ;; TODO: Add :sandbag physics layer and make collide with player and
+  ;; enemy bullet layers.
+  ;; TODO: Fix the damn mesh plane to be unit sized.
+
+  ;; TODO: Implement this component, add and put on :sandbag physics layer.
+  ;; (sandbag)
+
+  ("top"
+   (comp:cuboid :center (v3:zero)
+                :visualize t
+                :on-layer :scenery
+                :referent nil ;; (c:ref "../" :component 'sandbag)
+                :minx -340f0
+                :maxx 340f0
+                :miny 321f0
+                :maxy 420f0
+                :minz -10f0
+                :maxz 10f0))
+  ("right"
+   (comp:cuboid :center (v3:zero)
+                :visualize t
+                :on-layer :scenery
+                :referent nil ;; (c:ref "../" :component 'sandbag)
+                :minx 241f0
+                :maxx 340f0
+                :miny -420f0
+                :maxy 420f0
+                :minz -10f0
+                :maxz 10f0))
+  ("left"
+   (comp:cuboid :center (v3:zero)
+                :visualize t
+                :on-layer :scenery
+                :referent nil ;; (c:ref "../" :component 'sandbag)
+                :minx -340f0
+                :maxx -239f0
+                :miny -420f0
+                :maxy 420f0
+                :minz -10f0
+                :maxz 10f0))
+  ("bottom"
+   (comp:cuboid :center (v3:zero)
+                :visualize t
+                :on-layer :scenery
+                :referent nil ;; (c:ref "../" :component 'sandbag)
+                :minx -340f0
+                :maxx 340f0
+                :miny -420f0
+                :maxy -321f0
+                :minz -10f0
+                :maxz 10f0)))
+
 ;; This acts like a scene, but is just a regular prefab and the
 ;; initialization prefab when the game starts.
 (c:define-prefab "initial-scene" (:library lib/main)
@@ -285,11 +339,13 @@
                     ;; experience.
                     :velocity (* 1f0 (/ (- 7200f0 (* 320f0 2f0)) 90f0)))
 
+   (("sandbags" :link "/sandbags"))
+
    ;; a child of the scaffold.
    (("camera" :copy "/cameras/ortho")
     ;; put camera in middle of virtual screen scaffold carries
     (comp:transform :translate (v3:vec 0f0 0f0 0f0))
-    (comp:camera :zoom 1.5f0))
+    (comp:camera :zoom .5f0)) ;; 1.5 is correctly zoomed.
 
    ;; Test enemies for killing.
    (("enemy1" :link "/enemy1-ship")

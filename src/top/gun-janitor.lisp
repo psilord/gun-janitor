@@ -77,7 +77,7 @@
 
 ;; Player 1's basic shot.
 (c:define-prefab "red-shot-small" (:library lib/main)
-  "Player 1's Small Blue Shot"
+  "Player 1's Small Red Shot"
   (projectile :transform (c:ref :self :component 'comp:transform)
               :mover (c:ref :self :component 'direction-mover)
               :collider (c:ref :self :component 'comp:cuboid)

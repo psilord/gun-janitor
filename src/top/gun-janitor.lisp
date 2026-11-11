@@ -85,7 +85,7 @@
               :physics-layer :player-bullet
               :depth-layer :player-bullet
               :velocity (/ 320f0 .20f0)
-              :destroy-ttl .5f0
+              :destroy-ttl 2f0 ;; just in case they escape the playfield.
               :damage-points (c:ref :self :component 'damage-points)
               :hit-points (c:ref :self :component 'hit-points)
               :explosion (c:ref :self :component 'explosion))
@@ -145,6 +145,8 @@
            :render-layer :player
            :slave (c:ref :self :component 'comp:sprite))
    ("front-gun"
+    ;; TODO: Placement of this affects where the clipping should be for this
+    ;; ship. See definitions/component/player-mover.lisp's cuboid.
     (comp:transform :translate (v3:vec 0f0 14f0 0f0)) ;; 1/2 ship hight + bullet
     (gun :input-handler (c:ref "/initial-scene" :component 'input-handler)
          :emitter (c:ref :self :component 'emitter-split-arc)
@@ -245,17 +247,14 @@
           :slave (c:ref :self :component 'comp:sprite)))
 
 (c:define-prefab "playfield" (:library lib/main)
-  "Sandbags, one pixel beyond, the edges of the screen. They catch bullets."
-  ;; TODO: Add :sandbag physics layer and make collide with player and
-  ;; enemy bullet layers.
+  "The playfield represents the visual field the player can see. When bullet
+colliders leave it, the bullets are destroyed."
   ;; TODO: Fix the damn mesh plane to be unit sized.
-
-  ;; TODO: Implement this component, add and put on :sandbag physics layer.
-  ;; (playfield)
+  (playfield)
   (comp:cuboid :center (v3:zero)
                :visualize t
-               :on-layer :scenery
-               :referent nil ;; (c:ref "../" :component 'playfield)
+               :on-layer :playfield
+               :referent (c:ref :self :component 'playfield)
                :minx -240f0
                :maxx 240f0
                :miny -320f0
@@ -310,7 +309,7 @@
    (("camera" :copy "/cameras/ortho")
     ;; put camera in middle of virtual screen scaffold carries
     (comp:transform :translate (v3:vec 0f0 0f0 0f0))
-    (comp:camera :zoom .5f0)) ;; 1.5 is correctly zoomed.
+    (comp:camera :zoom .90f0)) ;; 1.5 is correctly zoomed.
 
    ;; Test enemies for killing.
    (("enemy1" :link "/enemy1-ship")

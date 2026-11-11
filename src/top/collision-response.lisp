@@ -12,12 +12,19 @@
 ;; way, when two things collide and these method are called twice with
 ;; the arguments in different order, nothing gets processed twice.
 
+;; TODO: decide if colony's collision system should always collide the
+;; referent against the referent instead of the referent against he actor.
 
-;; ;;;;;;;;;;;;;;;
-;; ship-computer <-> ship-computer, projectile
-;; ;;;;;;;;;;;;;;;
+(defun dump-collision (self other-collider event-type)
+  (let ((other (comp:referent other-collider)))
+    (format t "[~A|~A] ~(~S~) [~A|~A]~%"
+            (c:display-id (c:actor self))
+            event-type ;; :enter :exit :continue
+            (type-of self)
+            (c:display-id (c:actor other))
+            (type-of other))))
 
-(defun self-collision-response (self other)
+(defun self-accept-damage (self other)
   "This figures out how SELF component should assign damage to itself
 and/or respond when OTHER component has collided with it. When A and B
 collide first, A collides with B and then B collides with A. This
@@ -60,48 +67,116 @@ both C:ON-COLLISION-ENTER methods for a single collision!"
       ;; And finally, destroy myself.
       (c:destroy self-actor))))
 
-(defmethod c:on-collision-enter ((self ship-computer) other-collider)
-  (let ((other (comp:referent other-collider)))
-    #++(format t "[~A|~A] <entered> [~A|~A]~%"
-               (c:display-id (c:actor self))
-               (type-of self)
-               (c:display-id (c:actor other))
-               (type-of other))
-    (self-collision-response self other)))
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ship-computer <-> anything
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; Not used yet (maybe for grazing).
+;; The three main methods the engine calls which reroute to more specific
+;; methods based on the referent if there is one.
+(defmethod c:on-collision-enter ((self ship-computer) other-collider)
+  (u:when-let ((other (comp:referent other-collider)))
+    (c:on-collision-enter self other)))
+
 (defmethod c:on-collision-continue ((self ship-computer) other-collider)
-  nil)
+  (u:when-let ((other (comp:referent other-collider)))
+    (c:on-collision-continue self other)))
 
 (defmethod c:on-collision-exit ((self ship-computer) other-collider)
-  #++(let ((other (comp:referent other-collider)))
-       (format t "[~A|~A] <exited> [~A|~A]~%"
-               (c:display-id (c:actor self))
-               (type-of self)
-               (c:display-id (c:actor other))
-               (type-of other))))
+  (u:when-let ((other (comp:referent other-collider)))
+    (c:on-collision-exit self other)))
 
 ;; ;;;;;;;;;;;;;;;
-;; projectile <-> projectile, ship-computer
+;; ship-computer <-> ship-computer
+;;
+;; Two ships collide.
 ;; ;;;;;;;;;;;;;;;
+
+(defmethod c:on-collision-enter ((self ship-computer) (other ship-computer))
+  (self-accept-damage self other))
+
+;; Not used yet (maybe for grazing).
+(defmethod c:on-collision-continue ((self ship-computer) (other ship-computer))
+  nil)
+
+(defmethod c:on-collision-exit ((self ship-computer) (other ship-computer))
+  nil)
+
+;; ;;;;;;;;;;;;;;;
+;; ship-computer <-> projectile
+;;
+;; A ship collides with a projectile.
+;; ;;;;;;;;;;;;;;;
+
+(defmethod c:on-collision-enter ((self ship-computer) (other projectile))
+  (self-accept-damage self other))
+
+;; Not used yet (maybe for grazing).
+(defmethod c:on-collision-continue ((self ship-computer) (other projectile))
+  nil)
+
+(defmethod c:on-collision-exit ((self ship-computer) (other projectile))
+  nil)
+
+
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; projectile <-> anything.
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defmethod c:on-collision-enter ((self projectile) other-collider)
-  (let ((other (comp:referent other-collider)))
-    #++(format t "[~A|~A] <entered> [~A|~A]~%"
-               (c:display-id (c:actor self))
-               (type-of self)
-               (c:display-id (c:actor other))
-               (type-of other))
-    (self-collision-response self other)))
+  (u:when-let ((other (comp:referent other-collider)))
+    (c:on-collision-enter self other)))
 
 ;; Not used yet (maybe for grazing).
 (defmethod c:on-collision-continue ((self projectile) other-collider)
-  nil)
+  (u:when-let ((other (comp:referent other-collider)))
+    (c:on-collision-continue self other)))
 
 (defmethod c:on-collision-exit ((self projectile) other-collider)
-  #++(let ((other (comp:referent other-collider)))
-       (format t "[~A|~A] <exited> [~A|~A]~%"
-               (c:display-id (c:actor self))
-               (type-of self)
-               (c:display-id (c:actor other))
-               (type-of other))))
+  (u:when-let ((other (comp:referent other-collider)))
+    (c:on-collision-exit self other)))
+
+;; ;;;;;;;;;;;;;;;
+;; projectile <-> projectile
+;;
+;; Two bullets (enemy and player) collide.
+;; ;;;;;;;;;;;;;;;
+
+(defmethod c:on-collision-enter ((self projectile) (other projectile))
+  nil)
+
+(defmethod c:on-collision-continue ((self projectile) (other projectile))
+  nil)
+
+(defmethod c:on-collision-exit ((self projectile) (other projectile))
+  nil)
+
+;; ;;;;;;;;;;;;;;;
+;; projectile <-> ship-computer
+;;
+;; Bullet hits a ship.
+;; ;;;;;;;;;;;;;;;
+
+(defmethod c:on-collision-enter ((self projectile) (other ship-computer))
+  (self-accept-damage self other))
+
+(defmethod c:on-collision-continue ((self projectile) (other ship-computer))
+  nil)
+
+(defmethod c:on-collision-exit ((self projectile) (other ship-computer))
+  nil)
+
+;; ;;;;;;;;;;;;;;;
+;; projectile <-> playfield
+;;
+;; Bullet hits a ship.
+;; ;;;;;;;;;;;;;;;
+
+(defmethod c:on-collision-enter ((self projectile) (other playfield))
+  nil)
+
+(defmethod c:on-collision-continue ((self projectile) (other playfield))
+  nil)
+
+(defmethod c:on-collision-exit ((self projectile) (other playfield))
+  ;; destroy the projectile as it leaves the playfield.
+  (c:destroy (c:actor self)))

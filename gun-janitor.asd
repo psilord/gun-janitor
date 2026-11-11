@@ -69,7 +69,8 @@
        (:file "damage-points")
        (:file "hit-points")
        (:file "ship-computer")
-       (:file "explosion")))))
+       (:file "explosion")
+       (:file "playfield")))))
 
    ;; Your component methods all go here. In general, another large chunk of
    ;; game code resides here.
@@ -92,7 +93,8 @@
      (:file "projectile")
      (:file "emitter-split-arc")
      (:file "gun")
-     (:file "explosion")))
+     (:file "explosion")
+     (:file "playfield")))
 
    ;; All prefabs go in here. a prefab must be defined before it is referenced.
    ;; define-prefabs and define-model will go in here, ordered among themselves

@@ -39,8 +39,11 @@
                               (+ -240f0 24f0) (- 240f0 24f0)
                               ;; screen height, adjusted for ship size
                               ;; (including any weapon placements on the ship)
-                              ;; The 26 is because the front gun is 2 units
-                              ;; infront of the ship and we need to catch when
-                              ;; it leaves the playfield..
+                              ;;
+                              ;; TODO: The 26 is because the front gun
+                              ;; is 2 units infront of the ship and we
+                              ;; need to catch when it leaves the
+                              ;; playfield. I dunno yet how to make this
+                              ;; better.
                               (+ -320f0 24f0) (- 320f0 26f0)
                               -10f0 10f0))))

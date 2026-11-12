@@ -178,7 +178,7 @@
                  :hit-points (c:ref :self :component 'hit-points)
                  :damage-points (c:ref :self :component 'damage-points)
                  :explosion (c:ref :self :component 'explosion))
-  (tags :tags '(:enemy))
+  (tags :tags '(:enemy :dangerous))
   (damage-points :dp 1)
   (hit-points :hp 1)
   (explosion :prefab '("generic-ship-explosion" lib/main)

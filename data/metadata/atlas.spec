@@ -1,5 +1,9 @@
-;; Player planes/ships
-((:id "player1" :x 0 :y 0 :w 24 :h 24)
+(
+ ;; test square.
+ (:id "test0" :x 48 :y 24 :w 16 :h 16)
+
+ ;; Player planes/ships
+ (:id "player1" :x 0 :y 0 :w 24 :h 24)
  (:id "player2" :x 24 :y 0 :w 24 :h 24)
 
  ;; Flicker between at 30 hz

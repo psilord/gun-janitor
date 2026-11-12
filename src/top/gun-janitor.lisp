@@ -98,22 +98,19 @@
              :render-layer :player-bullet-explosion)
   (comp:sprite :spec '(metadata atlas)
                :block-alias :atlas-spritesheet
-               :name "red-shot-small"
+               :name  "red-shot-small"
                :frames 1
                :duration 1f0)
   (comp:cuboid :center (v3:zero)
-               ;; TODO: Visualize is broken cause I need to change properties
-               ;; about the material being used during the debugging render.
-               ;; :visualize t
+               :visualize t
                :on-layer :player-bullet
                :referent (c:ref :self :component 'projectile)
-               :center (v3:zero)
-               :minx -1f0
-               :maxx 1f0
-               :miny -1f0
-               :maxy 1f0
-               :minz -1f0
-               :maxz 1f0)
+               :minx -2f0
+               :maxx 2f0
+               :miny -2f0
+               :maxy 2f0
+               :minz -.2f0
+               :maxz .2f0)
   (sketch :material 'sprite-atlas
           :render-layer :player-bullet
           :slave (c:ref :self :component 'comp:sprite)))
@@ -133,11 +130,16 @@
   (explosion :prefab '("generic-ship-explosion" lib/main)
              :render-layer :player-explosion)
   ("ship-body"
-   (comp:sphere :center (v3:zero)
+   (comp:cuboid :center (v3:zero)
                 :on-layer :player
                 :referent (c:ref "../" :component 'ship-computer)
                 :visualize t
-                :radius 6f0)
+                :minx -5f0
+                :maxx 5f0
+                :miny -5f0
+                :maxy 5f0
+                :minz -.2f0
+                :maxz .2f0)
    (comp:sprite :spec '(metadata atlas)
                 :block-alias :atlas-spritesheet
                 :name "player1")
@@ -309,7 +311,7 @@ colliders leave it, the bullets are destroyed."
    (("camera" :copy "/cameras/ortho")
     ;; put camera in middle of virtual screen scaffold carries
     (comp:transform :translate (v3:vec 0f0 0f0 0f0))
-    (comp:camera :zoom .90f0)) ;; 1.5 is correctly zoomed.
+    (comp:camera :zoom 1f0)) ;; 1.5 is correctly zoomed.
 
    ;; Test enemies for killing.
    (("enemy1" :link "/enemy1-ship")

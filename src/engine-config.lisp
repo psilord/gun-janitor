@@ -4,6 +4,32 @@
 ;;; how to start the application, where to find physical game assets, and the
 ;;; definition of the execution order of the component protocol.
 
+;;; Physics Config
+
+(c:define-physics-config gun-janitor-physics ()
+  (c:physics-layers
+   (c:definitions
+    (A :ground)
+    (B :player)
+    (C :player-bullet)
+    (D :enemy)
+    (E :enemy-bullet)
+    (F :scenery)
+    (G :planet)
+    (H :playfield))
+   (c:collision-plan
+    (c:table-spec
+     ;; rows and columns are REQUIRED to be in same order.
+     ((  A B C D E F G H)
+      (A y)
+      (B y n)
+      (C y n n)
+      (D y y y n)
+      (E y y y n n)
+      (F n n n n n n)
+      (G n n n y n n n)
+      (H n n y n y n n n))))))
+
 ;;; Config for this project.
 
 (c:define-config start-config-0 ()
@@ -11,12 +37,14 @@
   :window-width 720
   :window-height 960
   :delta (float 1/120 1f0)
+  :physics-config 'gun-janitor-physics
   :initial-scene '(("initial-scene" lib/main)))
 
 (c:define-config start-config-1 ()
   :window-width 240
   :window-height 320
   :delta (float 1/120 1f0)
+  :physics-config 'gun-janitor-physics
   :initial-scene '(("initial-scene" lib/main)))
 
 ;;; Asset Pool Definitions

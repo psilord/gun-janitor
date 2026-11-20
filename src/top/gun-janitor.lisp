@@ -279,12 +279,13 @@ colliders leave it, the bullets are destroyed."
   ;; level is in a plane, whose original size was (-1, -1) to (1, 1) and
   ;; will be scaled to (-240,-3600) to (240, 3600), and does not move. The scale
   ;; is 240 by 3600... the size of the background in pixels.
-  (("level-0" :copy "/mesh")
-   (comp:transform
-    :scale (v3:vec 240f0 3600f0 1f0)
-    :translate (v3:vec 0f0 0f0 (dl :background)))
-   (comp:render :material 'level-0
-                :slave (c:ref :self :component 'comp:mesh)))
+  ("level-holder"
+   (("level-0" :copy "/mesh")
+    (comp:transform
+     :scale (v3:vec 240f0 3600f0 1f0)
+     :translate (v3:vec 0f0 0f0 (dl :background)))
+    (comp:render :material 'level-0
+                 :slave (c:ref :self :component 'comp:mesh))))
 
   ;; scaffold slides down the level, carrying camera and player. The
   ;; scaffolding will hold score boards and anything that might be in

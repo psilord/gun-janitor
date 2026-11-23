@@ -65,10 +65,11 @@ Milestones:
   This means we finally implement on-collider-enter and friends for various
   components which figure out what to do when certain colliders collide.
 
-- Add playfield collider to the scaffold to catch bullets that are exiting the
-  playfield and destroy them. This replaces the ttl time for bullets which was
-  always the wrong solution. When the bullet collider exits the playfield it
-  will be considered out of play and cannot affect enemies anymore.
+- [DONE] Add playfield collider to the scaffold to catch bullets that are
+  exiting the playfield and destroy them. This replaces the ttl time for
+  bullets which was always the wrong solution. When the bullet collider exits
+  the playfield it will be considered out of play and cannot affect enemies
+  anymore.
 
   - Added these components:
     - playfield - when a bullet exists the playfield, it is destroyed.

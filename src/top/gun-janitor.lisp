@@ -74,7 +74,6 @@
                           prefab))
         :finally (return shots)))
 
-
 ;; Player 1's basic shot.
 (c:define-prefab "red-shot-small" (:library lib/main)
   "Player 1's Small Red Shot"
